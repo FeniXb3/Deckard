@@ -7,8 +7,9 @@ namespace Deckard.Specs
     {
         Establish context = () =>
         {
-            deck = new Deck();
-            deckBeforeShuffle = new Deck();
+            shuffler = new RandomNumberSortShuffler();
+            deck = new Deck(shuffler);
+            deckBeforeShuffle = new Deck(shuffler);
         };
         
         Because of = () =>
@@ -23,5 +24,6 @@ namespace Deckard.Specs
 
         static Deck deck;
         static Deck deckBeforeShuffle;
+        static IShuffler shuffler;
     }
 }

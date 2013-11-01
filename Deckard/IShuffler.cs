@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Deckard
 {
-    interface IShuffler
+    public interface IShuffler
     {
         void Shuffle(Deck deck);
     }
