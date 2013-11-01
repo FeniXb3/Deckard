@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Deckard
 {
-    public class Deck
+    public class Deck : IEquatable<Deck>
     {
         public IShuffler Shuffler
         {
@@ -41,6 +41,42 @@ namespace Deckard
             }
 
             return sb.ToString();
+        }
+
+        public override bool Equals(object a)
+        {
+            if (a == null)
+                return false;
+
+            Deck other = a as Deck;
+
+            if (this.Cards.Count != other.Cards.Count)
+                return false;
+
+            for (int i = 0; i < this.Cards.Count; i++)
+            {
+                if (!this.Cards[i].Equals(other.Cards[i]))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public bool Equals(Deck other)
+        {
+            if (other == null)
+                return false;
+
+            if (this.Cards.Count != other.Cards.Count)
+                return false;
+
+            for (int i = 0; i < this.Cards.Count; i++)
+            {
+                if (!this.Cards[i].Equals(other.Cards[i]))
+                    return false;
+            }
+
+            return true;
         }
     }
 }
