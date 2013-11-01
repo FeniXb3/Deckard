@@ -27,5 +27,20 @@ namespace Deckard
         {
             Shuffler.Shuffle(this);
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            int index = 1;
+
+            sb.AppendFormat("Cards count: {0}\n", Cards.Count);
+            foreach (var c in Cards)
+            {
+                sb.AppendFormat("- Card no. {0}:\n", index++);
+                sb.AppendLine(c.ToString());
+            }
+
+            return sb.ToString();
+        }
     }
 }
