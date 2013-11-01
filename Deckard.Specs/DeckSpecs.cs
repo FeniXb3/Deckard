@@ -14,5 +14,8 @@ namespace Deckard.Specs
         {
             deck.ShouldNotEqual(deckBeforeShuffle);
         };
+
+        static Deck deck;
+        static Deck deckBeforeShuffle;
     }
 }
