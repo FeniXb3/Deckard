@@ -26,4 +26,23 @@ namespace Deckard.Specs
         static Deck deckBeforeShuffle;
         static IShuffler shuffler;
     }
+
+    [Subject("Deck")]
+    public class when_compared_with_another_deck
+    {
+        Establish context = () =>
+        {
+            deck = new Deck(shuffler);
+            deck2 = new Deck(shuffler);
+        };
+
+        It should_be_equal_if_cards_are_in_the_same_order = () =>
+        {
+            deck.ShouldEqual(deck2);
+        };
+
+        static Deck deck;
+        static Deck deck2;
+        static IShuffler shuffler;
+    }
 }

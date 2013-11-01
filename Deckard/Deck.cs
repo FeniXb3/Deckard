@@ -22,7 +22,7 @@ namespace Deckard
 
             Cards = new List<Card>();
         }
-
+        
         public void Shuffle()
         {
             Shuffler.Shuffle(this);
