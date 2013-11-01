@@ -1,4 +1,5 @@
 ﻿using Machine.Specifications;
+using System.Collections.Generic;
 
 namespace Deckard.Specs
 {
@@ -36,6 +37,17 @@ namespace Deckard.Specs
             deck2 = new Deck(shuffler);
         };
 
+        Because of = () =>
+        {
+            cards = new List<Card>();
+
+            cards.Add(new Card());
+            cards.Add(new Card());
+
+            deck.Cards = cards;
+            deck2.Cards = cards;
+        };
+
         It should_be_equal_if_cards_are_in_the_same_order = () =>
         {
             deck.ShouldEqual(deck2);
@@ -44,5 +56,6 @@ namespace Deckard.Specs
         static Deck deck;
         static Deck deck2;
         static IShuffler shuffler;
+        static List<Card> cards;
     }
 }

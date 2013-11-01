@@ -25,7 +25,7 @@ namespace Deckard
         
         public void Shuffle()
         {
-            Shuffler.Shuffle(this);
+            Cards = Shuffler.Shuffle(this);
         }
 
         public override string ToString()
