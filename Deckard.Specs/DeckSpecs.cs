@@ -5,6 +5,12 @@ namespace Deckard.Specs
     [Subject("Deck")]
     public class when_shuffled
     {
+        Establish context = () =>
+        {
+            deck = new Deck();
+            deckBeforeShuffle = new Deck();
+        };
+        
         Because of = () =>
         {
             deck.Shuffle();
