@@ -11,6 +11,18 @@ namespace Deckard.Specs
             shuffler = new RandomNumberSortShuffler();
             deck = new Deck(shuffler);
             deckBeforeShuffle = new Deck(shuffler);
+
+            cards = new List<Card>();
+
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Spades");
+            cards.Add(newCard);
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Clubs");
+            cards.Add(newCard);
+
+            deck.Cards = cards;
+            deckBeforeShuffle.Cards = cards;
         };
         
         Because of = () =>
@@ -26,6 +38,8 @@ namespace Deckard.Specs
         static Deck deck;
         static Deck deckBeforeShuffle;
         static IShuffler shuffler;
+        static List<Card> cards;
+        static Card newCard;
     }
 
     [Subject("Deck")]
@@ -41,8 +55,12 @@ namespace Deckard.Specs
         {
             cards = new List<Card>();
 
-            cards.Add(new Card());
-            cards.Add(new Card());
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Spades");
+            cards.Add(newCard);
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Clubs");
+            cards.Add(newCard);
 
             deck.Cards = cards;
             deck2.Cards = cards;
@@ -57,5 +75,6 @@ namespace Deckard.Specs
         static Deck deck2;
         static IShuffler shuffler;
         static List<Card> cards;
+        static Card newCard;
     }
 }
