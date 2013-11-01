@@ -7,9 +7,11 @@ namespace Deckard
 {
     public class Deck
     {
+        IShuffler Shuffler;
+
         public void Shuffle()
         {
-            throw new NotImplementedException();
+            Shuffler.Shuffle(this);
         }
     }
 }
