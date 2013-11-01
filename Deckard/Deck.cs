@@ -7,5 +7,9 @@ namespace Deckard
 {
     public class Deck
     {
+        public void Shuffle()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
