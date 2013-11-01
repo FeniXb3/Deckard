@@ -19,6 +19,8 @@ namespace Deckard
         public Deck(IShuffler shuffler)
         {
             this.shuffler = shuffler;
+
+            Cards = new List<Card>();
         }
 
         public void Shuffle()
