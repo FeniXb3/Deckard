@@ -5,8 +5,7 @@ using System.Text;
 
 namespace Deckard
 {
-    public interface IShuffler
+    public class Card
     {
-        List<Card> Shuffle(Deck deck);
     }
 }

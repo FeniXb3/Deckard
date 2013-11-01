@@ -7,11 +7,13 @@ namespace Deckard
 {
     public class Deck
     {
-        IShuffler Shuffler
+        public IShuffler Shuffler
         {
             set { shuffler = value; }
             get { return shuffler; }
         }
+        public List<Card> Cards;
+
         private IShuffler shuffler;
 
         public Deck(IShuffler shuffler)
