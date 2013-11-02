@@ -63,6 +63,8 @@ namespace Deckard.Specs
         {
             deck = new Deck(shuffler);
             deck2 = new Deck(shuffler);
+            differentDeck = new Deck(shuffler);
+            smallerDeck = new Deck(shuffler);
         };
 
         Because of = () =>
@@ -78,6 +80,26 @@ namespace Deckard.Specs
 
             deck.Cards = cards;
             deck2.Cards = cards;
+
+            cards = new List<Card>();
+
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Spades");
+            cards.Add(newCard);
+            smallerDeck.Cards = cards;
+
+            differentCards = new List<Card>();
+            
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Dimonds");
+            newCard.Attributes.Add("name", "Queen");
+            differentCards.Add(newCard);
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Spades");
+            newCard.Attributes.Add("name", "1");
+            differentCards.Add(newCard);
+
+            differentDeck.Cards = differentCards;
         };
 
         It should_be_equal_if_cards_are_in_the_same_order = () =>
@@ -85,10 +107,23 @@ namespace Deckard.Specs
             deck.ShouldEqual(deck2);
         };
 
+        It should_not_be_equal_if_cards_have_different_attributes = () =>
+        {
+            deck.ShouldNotEqual(differentDeck);
+        };
+
+        It should_not_be_equal_if_quantity_of_cards_is_different = () =>
+        {
+            deck.ShouldNotEqual(smallerDeck);
+        };
+
         static Deck deck;
         static Deck deck2;
+        static Deck differentDeck;
+        static Deck smallerDeck;
         static IShuffler shuffler;
         static List<Card> cards;
         static Card newCard;
+        static List<Card> differentCards;
     }
 }
