@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Deckard
 {
-    public class Card
+    public class Card : IEquatable<Card>
     {
         public Dictionary<string, string> Attributes;
 
@@ -27,6 +27,42 @@ namespace Deckard
             }
 
             return sb.ToString();
+        }
+
+        public bool Equals(Card other)
+        {
+            if (other == null)
+                return false;
+
+            foreach (var attr in Attributes)
+            {
+                if (!other.Attributes.ContainsKey(attr.Key))
+                    return false;
+
+                if (!Attributes[attr.Key].Equals(other.Attributes[attr.Key]))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other == null)
+                return false;
+
+            Card c = other as Card;
+
+            foreach (var attr in Attributes)
+            {
+                if (!c.Attributes.ContainsKey(attr.Key))
+                    return false;
+
+                if (!Attributes[attr.Key].Equals(c.Attributes[attr.Key]))
+                    return false;
+            }
+
+            return true;
         }
     }
 }

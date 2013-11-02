@@ -16,9 +16,23 @@ namespace Deckard.Specs
 
             newCard = new Card();
             newCard.Attributes.Add("suit", "Spades");
+            newCard.Attributes.Add("name", "Ace");
+            cards.Add(newCard);
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Hearts");
+            newCard.Attributes.Add("name", "Queen");
             cards.Add(newCard);
             newCard = new Card();
             newCard.Attributes.Add("suit", "Clubs");
+            newCard.Attributes.Add("name", "King");
+            cards.Add(newCard);
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Dimonds");
+            newCard.Attributes.Add("name", "Queen");
+            cards.Add(newCard);
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Spades");
+            newCard.Attributes.Add("name", "1");
             cards.Add(newCard);
 
             deck.Cards = cards;
