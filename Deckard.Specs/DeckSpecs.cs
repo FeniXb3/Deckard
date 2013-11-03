@@ -29,25 +29,17 @@ namespace Deckard.Specs
             cards.Add(newCard);
 
             deck.Cards = cards;
-            deck2.Cards = cards;
+            deck2 = deck.DeepCopy();
 
-            cards = new List<Card>();
+            smallerDeck = deck.DeepCopy();
+            smallerDeck.Cards.RemoveAt(0);
 
-            newCard = new Card();
-            newCard.Attributes.Add("suit", "Spades");
-            cards.Add(newCard);
-            smallerDeck.Cards = cards;
-            
-            cards = new List<Card>();
-
-            newCard = new Card();
-            newCard.Attributes.Add("suit", "Spades");
-            cards.Add(newCard);
-            newCard = new Card();
-            newCard.Attributes.Add("suit", "Clubs");
+            biggerDeck = deck.DeepCopy();
             newCard = new Card();
             newCard.Attributes.Add("suit", "Hearts");
-            smallerDeck.Cards = cards;
+            biggerDeck.Cards.Add(newCard);
+
+
 
             differentCards = new List<Card>();
             

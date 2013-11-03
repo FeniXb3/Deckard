@@ -83,5 +83,22 @@ namespace Deckard
 
             return hashCode;
         }
+
+        /// <summary>
+        /// Create a deep copy of a card
+        /// </summary>
+        /// <returns>Deep copy of a card</returns>
+        public Card DeepCopy()
+        {
+            Card newCard = this.MemberwiseClone() as Card;
+            newCard.Attributes = new Dictionary<string, string>();
+
+            foreach (var attr in this.Attributes)
+            {
+                newCard.Attributes.Add(attr.Key, attr.Value);
+            }
+
+            return newCard;
+        }
     }
 }

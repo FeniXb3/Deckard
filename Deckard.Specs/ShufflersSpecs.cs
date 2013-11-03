@@ -10,7 +10,7 @@ namespace Deckard.Specs
         {
             shuffler = new RandomNumberSortShuffler();
             deck = new Deck(shuffler);
-            deckBeforeShuffle = new Deck(shuffler);
+            deckBeforeShuffle = deck.DeepCopy();
 
             cards = new List<Card>();
 
@@ -63,7 +63,7 @@ namespace Deckard.Specs
         {
             shuffler = new KnuthFisherYatesShuffler();
             deck = new Deck(shuffler);
-            deckBeforeShuffle = new Deck(shuffler);
+            deckBeforeShuffle = deck.DeepCopy();
 
             cards = new List<Card>();
 

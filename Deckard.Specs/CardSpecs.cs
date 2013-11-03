@@ -19,14 +19,15 @@ namespace Deckard.Specs
             card1.Attributes.Add("suit", "Hearts");
             card1.Attributes.Add("name", "Queen");
 
-            card2.Attributes.Add("suit", "Hearts");
-            card2.Attributes.Add("name", "Queen");
+            card2 = card1.DeepCopy();
+            differentCard = card1.DeepCopy();
 
-            differentCard.Attributes.Add("suit", "Spades");
-            differentCard.Attributes.Add("name", "Ace");
-
-            cardWithLessAttributes.Attributes.Add("suit", "Hearts");
+            differentCard.Attributes["suit"] = "Spades";
+            differentCard.Attributes["name"] = "Ace";
             
+            cardWithLessAttributes = card1.DeepCopy();
+            cardWithLessAttributes.Attributes.Remove("name");
+
             cardWithDifferentAttributes.Attributes.Add("color", "Hearts");
             cardWithDifferentAttributes.Attributes.Add("value", "Queen");
         };

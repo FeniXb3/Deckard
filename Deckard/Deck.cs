@@ -90,5 +90,22 @@ namespace Deckard
 
             return hashCode;
         }
+
+        /// <summary>
+        /// Create a deep copy of deck
+        /// </summary>
+        /// <returns>Deep copy of deck</returns>
+        public Deck DeepCopy()
+        {
+            Deck newDeck = this.MemberwiseClone() as Deck;
+            newDeck.Cards = new List<Card>();
+
+            foreach (var card in this.Cards)
+            {
+                newDeck.Cards.Add(card.DeepCopy());
+            }
+
+            return newDeck;
+        }
     }
 }
