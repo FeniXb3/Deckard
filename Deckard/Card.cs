@@ -34,6 +34,9 @@ namespace Deckard
             if (other == null)
                 return false;
 
+            if (this.Attributes.Count != other.Attributes.Count)
+                return false;
+
             foreach (var attr in Attributes)
             {
                 if (!other.Attributes.ContainsKey(attr.Key))
@@ -52,6 +55,10 @@ namespace Deckard
                 return false;
 
             Card c = other as Card;
+
+
+            if (this.Attributes.Count != c.Attributes.Count)
+                return false;
 
             foreach (var attr in Attributes)
             {

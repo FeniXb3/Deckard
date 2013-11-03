@@ -61,10 +61,13 @@ namespace Deckard.Specs
     {
         Establish context = () =>
         {
+            shuffler = new RandomNumberSortShuffler();
+
             deck = new Deck(shuffler);
             deck2 = new Deck(shuffler);
             differentDeck = new Deck(shuffler);
             smallerDeck = new Deck(shuffler);
+            biggerDeck = new Deck(shuffler);
         };
 
         Because of = () =>
@@ -87,6 +90,17 @@ namespace Deckard.Specs
             newCard.Attributes.Add("suit", "Spades");
             cards.Add(newCard);
             smallerDeck.Cards = cards;
+            
+            cards = new List<Card>();
+
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Spades");
+            cards.Add(newCard);
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Clubs");
+            newCard = new Card();
+            newCard.Attributes.Add("suit", "Hearts");
+            smallerDeck.Cards = cards;
 
             differentCards = new List<Card>();
             
@@ -102,11 +116,6 @@ namespace Deckard.Specs
             differentDeck.Cards = differentCards;
         };
 
-        It should_be_equal_if_cards_are_in_the_same_order = () =>
-        {
-            deck.ShouldEqual(deck2);
-        };
-
         It should_not_be_equal_if_cards_have_different_attributes = () =>
         {
             deck.ShouldNotEqual(differentDeck);
@@ -115,12 +124,19 @@ namespace Deckard.Specs
         It should_not_be_equal_if_quantity_of_cards_is_different = () =>
         {
             deck.ShouldNotEqual(smallerDeck);
+            deck.ShouldNotEqual(biggerDeck);
+        };
+
+        It should_be_equal_if_cards_are_in_the_same_order = () =>
+        {
+            deck.ShouldEqual(deck2);
         };
 
         static Deck deck;
         static Deck deck2;
         static Deck differentDeck;
         static Deck smallerDeck;
+        static Deck biggerDeck;
         static IShuffler shuffler;
         static List<Card> cards;
         static Card newCard;
