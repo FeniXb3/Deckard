@@ -22,10 +22,10 @@ namespace Deckard.Specs
             cards = new List<Card>();
 
             newCard = new Card();
-            newCard.Attributes.Add("suit", "Spades");
+            newCard["suit"] = "Spades";
             cards.Add(newCard);
             newCard = new Card();
-            newCard.Attributes.Add("suit", "Clubs");
+            newCard["suit"] = "Clubs";
             cards.Add(newCard);
 
             deck.Cards = cards;
@@ -36,7 +36,7 @@ namespace Deckard.Specs
 
             biggerDeck = deck.DeepCopy();
             newCard = new Card();
-            newCard.Attributes.Add("suit", "Hearts");
+            newCard["suit"] = "Hearts";
             biggerDeck.Cards.Add(newCard);
 
 
@@ -44,12 +44,12 @@ namespace Deckard.Specs
             differentCards = new List<Card>();
             
             newCard = new Card();
-            newCard.Attributes.Add("suit", "Dimonds");
-            newCard.Attributes.Add("name", "Queen");
+            newCard["suit"] = "Dimonds";
+            newCard["name"] = "Queen";
             differentCards.Add(newCard);
             newCard = new Card();
-            newCard.Attributes.Add("suit", "Spades");
-            newCard.Attributes.Add("name", "1");
+            newCard["suit"] = "Spades";
+            newCard["name"] = "1";
             differentCards.Add(newCard);
 
             differentDeck.Cards = differentCards;
