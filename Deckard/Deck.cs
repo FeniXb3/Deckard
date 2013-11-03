@@ -78,5 +78,17 @@ namespace Deckard
 
             return true;
         }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 23;
+
+            foreach (var card in Cards)
+            {
+                hashCode += 3 * card.GetHashCode();
+            }
+
+            return hashCode;
+        }
     }
 }

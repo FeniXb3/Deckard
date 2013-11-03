@@ -71,5 +71,17 @@ namespace Deckard
 
             return true;
         }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 37;
+
+            foreach (var attr in Attributes)
+            {
+                hashCode += 3 * attr.Key.GetHashCode() + 7 * attr.Value.GetHashCode();
+            }
+
+            return hashCode;
+        }
     }
 }
