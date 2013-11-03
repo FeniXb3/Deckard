@@ -13,9 +13,6 @@ namespace Deckard.Specs
 
         Because of = () =>
         {
-            card.Attributes.Add("suit", string.Empty);
-            card.Attributes.Add("name", string.Empty);
-
             card["suit"] = "Spades";
             card["name"] = "Ace";
         };
@@ -44,8 +41,8 @@ namespace Deckard.Specs
 
         Because of = () =>
         {
-            card1.Attributes.Add("suit", "Hearts");
-            card1.Attributes.Add("name", "Queen");
+            card1["suit"] = "Hearts";
+            card1["name"] = "Queen";
 
             card2 = card1.DeepCopy();
             differentCard = card1.DeepCopy();
@@ -56,8 +53,8 @@ namespace Deckard.Specs
             cardWithLessAttributes = card1.DeepCopy();
             cardWithLessAttributes.Attributes.Remove("name");
 
-            cardWithDifferentAttributes.Attributes.Add("color", "Hearts");
-            cardWithDifferentAttributes.Attributes.Add("value", "Queen");
+            cardWithDifferentAttributes["color"] = "Hearts";
+            cardWithDifferentAttributes["value"] = "Queen";
         };
 
 

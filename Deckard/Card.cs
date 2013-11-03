@@ -17,7 +17,13 @@ namespace Deckard
         public string this[string attributeName]
         {
             get { return Attributes[attributeName]; }
-            set { Attributes[attributeName] = value; }
+            set 
+            {
+                if (!Attributes.ContainsKey(attributeName))
+                    Attributes.Add(attributeName, value);
+                else
+                    Attributes[attributeName] = value; 
+            }
         }
 
         public Card()
