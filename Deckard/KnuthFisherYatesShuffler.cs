@@ -14,18 +14,14 @@ namespace Deckard.Specs
             list[indexB] = tmp;
         }
 
-        public List<Card> Shuffle(Deck deck)
+        public void Shuffle(Deck deck)
         {
             Random R = new Random((int)DateTime.Now.Ticks);
-
-            List<Card> newCardsOrder = deck.Cards.ToList();
-
-            for (int i = 0; i < newCardsOrder.Count; i++)
+            
+            for (int i = 0; i < deck.Cards.Count; i++)
             {
-                Swap(newCardsOrder, i, i + R.Next(newCardsOrder.Count - i));
+                Swap(deck.Cards, i, i + R.Next(deck.Cards.Count - i));
             }
-
-            return newCardsOrder;
         }
     }
 }

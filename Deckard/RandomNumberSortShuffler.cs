@@ -7,11 +7,9 @@ namespace Deckard
 {
     public class RandomNumberSortShuffler : IShuffler
     {
-        public List<Card> Shuffle(Deck deck)
+        public void Shuffle(Deck deck)
         {
-            var sortedCards = deck.Cards.OrderBy(g => Guid.NewGuid());
-
-            return sortedCards.ToList();
+            deck.Cards = deck.Cards.OrderBy(g => Guid.NewGuid()).ToList();
         }
     }
 }

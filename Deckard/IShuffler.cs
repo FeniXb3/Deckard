@@ -4,6 +4,6 @@ namespace Deckard
 {
     public interface IShuffler
     {
-        List<Card> Shuffle(Deck deck);
+        void Shuffle(Deck deck);
     }
 }

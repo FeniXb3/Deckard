@@ -36,7 +36,7 @@ namespace Deckard.Specs
             cards.Add(newCard);
 
             deck.Cards = cards;
-            deckBeforeShuffle.Cards = cards;
+            deckBeforeShuffle = deck.DeepCopy();
         };
 
         Because of = () =>
@@ -89,7 +89,7 @@ namespace Deckard.Specs
             cards.Add(newCard);
 
             deck.Cards = cards;
-            deckBeforeShuffle.Cards = cards;
+            deckBeforeShuffle = deck.DeepCopy();
         };
 
         Because of = () =>
