@@ -48,6 +48,7 @@
     <Compile Include="CardSpecs.cs" />
     <Compile Include="DeckSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShufflersSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Deckard\Deckard.csproj">
