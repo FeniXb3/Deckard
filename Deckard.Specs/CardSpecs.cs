@@ -1,7 +1,35 @@
 ﻿using Machine.Specifications;
+using System.Collections.Generic;
 
 namespace Deckard.Specs
 {
+    [Subject("Card")]
+    public class when_attributes_are_set
+    {
+        Establish context = () => 
+        {
+            card = new Card();
+        };
+
+        Because of = () =>
+        {
+            card.Attributes.Add("suit", string.Empty);
+            card.Attributes.Add("name", string.Empty);
+
+            card["suit"] = "Spades";
+            card["name"] = "Ace";
+        };
+
+        It should_contain_attributes_with_the_values_set = () =>
+        {
+            card["suit"].ShouldEqual("Spades");
+            card["name"].ShouldEqual("Ace");
+        };
+
+        static Card card;
+    }
+
+
     [Subject("Card")]
     public class when_compared_with_another_card
     {
@@ -22,8 +50,8 @@ namespace Deckard.Specs
             card2 = card1.DeepCopy();
             differentCard = card1.DeepCopy();
 
-            differentCard.Attributes["suit"] = "Spades";
-            differentCard.Attributes["name"] = "Ace";
+            differentCard["suit"] = "Spades";
+            differentCard["name"] = "Ace";
             
             cardWithLessAttributes = card1.DeepCopy();
             cardWithLessAttributes.Attributes.Remove("name");

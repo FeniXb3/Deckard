@@ -9,6 +9,17 @@ namespace Deckard
     {
         public Dictionary<string, string> Attributes;
 
+        /// <summary>
+        /// Get or set value of the given attribute
+        /// </summary>
+        /// <param name="attributeName">Name of the attribute</param>
+        /// <returns>Value of the given attribute</returns>
+        public string this[string attributeName]
+        {
+            get { return Attributes[attributeName]; }
+            set { Attributes[attributeName] = value; }
+        }
+
         public Card()
         {
             Attributes = new Dictionary<string, string>();
