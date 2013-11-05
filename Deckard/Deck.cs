@@ -7,6 +7,22 @@ namespace Deckard
 {
     public class Deck : IEquatable<Deck>
     {
+        /// <summary>
+        /// Gets the top card from a deck
+        /// </summary>
+        public Card Top
+        {
+            get { return (Cards.Count > 0) ? Cards[Cards.Count - 1] : null; }
+        }
+
+        /// <summary>
+        /// Gets the bottom card from a deck
+        /// </summary>
+        public Card Bottom
+        {
+            get { return (Cards.Count > 0) ? Cards[0] : null; }
+        }
+
         public IShuffler Shuffler
         {
             set { shuffler = value; }

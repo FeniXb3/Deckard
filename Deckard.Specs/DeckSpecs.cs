@@ -20,9 +20,9 @@ namespace Deckard.Specs
         Because of = () =>
         {
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
+            deck.Top["suit"] = "Spades";
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Dimonds";
+            deck.Top["suit"] = "Dimonds";
 
             deck2 = deck.DeepCopy();
 
@@ -30,14 +30,15 @@ namespace Deckard.Specs
             smallerDeck.Cards.RemoveAt(0);
 
             biggerDeck = deck.DeepCopy();
-            biggerDeck.Cards[biggerDeck.Cards.Count - 1]["suit"] = "Hearts";
+            biggerDeck.Cards.Add(new Card());
+            biggerDeck.Top["suit"] = "Hearts";
 
             differentDeck.Cards.Add(new Card());
-            differentDeck.Cards[differentDeck.Cards.Count - 1]["suit"] = "Dimonds";
-            differentDeck.Cards[differentDeck.Cards.Count - 1]["name"] = "Queen";
+            differentDeck.Top["suit"] = "Dimonds";
+            differentDeck.Top["name"] = "Queen";
             differentDeck.Cards.Add(new Card());
-            differentDeck.Cards[differentDeck.Cards.Count - 1]["suit"] = "Spades";
-            differentDeck.Cards[differentDeck.Cards.Count - 1]["name"] = "1";
+            differentDeck.Top["suit"] = "Spades";
+            differentDeck.Top["name"] = "1";
         };
 
         It should_not_be_equal_if_cards_have_different_attributes = () =>
@@ -76,19 +77,31 @@ namespace Deckard.Specs
         Because of = () =>
         {
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Dimonds";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "Queen";
+            deck.Top["suit"] = "Dimonds";
+            deck.Top["name"] = "Queen";
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "1";
+            deck.Top["suit"] = "Spades";
+            deck.Top["name"] = "1";
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "Ace";
+            deck.Top["suit"] = "Spades";
+            deck.Top["name"] = "Ace";
         };
                 
         It should_have_3_cards = () =>
         {
             deck.Cards.Count.ShouldEqual(3);
+        };
+
+        It should_have_the_last_card_on_top = () =>
+        {
+            deck.Top["suit"].ShouldEqual("Spades");
+            deck.Top["name"].ShouldEqual("Ace");
+        };
+
+        It should_have_the_first_card_on_bottom = () =>
+        {
+            deck.Bottom["suit"].ShouldEqual("Dimonds");
+            deck.Bottom["name"].ShouldEqual("Queen");
         };
 
         static Deck deck;

@@ -12,20 +12,20 @@ namespace Deckard.Specs
             deck = new Deck(shuffler);
 
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "Ace";
+            deck.Top["suit"] = "Spades";
+            deck.Top["name"] = "Ace";
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Hearts";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "Queen";
+            deck.Top["suit"] = "Hearts";
+            deck.Top["name"] = "Queen";
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Clubs";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "King";
+            deck.Top["suit"] = "Clubs";
+            deck.Top["name"] = "King";
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Dimonds";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "Queen";
+            deck.Top["suit"] = "Dimonds";
+            deck.Top["name"] = "Queen";
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "1";
+            deck.Top["suit"] = "Spades";
+            deck.Top["name"] = "1";
 
             deckBeforeShuffle = deck.DeepCopy();
         };
@@ -54,20 +54,20 @@ namespace Deckard.Specs
             deck = new Deck(shuffler);
 
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "Ace";
+            deck.Top["suit"] = "Spades";
+            deck.Top["name"] = "Ace";
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Hearts";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "Queen";
+            deck.Top["suit"] = "Hearts";
+            deck.Top["name"] = "Queen";
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Clubs";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "King";
+            deck.Top["suit"] = "Clubs";
+            deck.Top["name"] = "King";
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Dimonds";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "Queen";
+            deck.Top["suit"] = "Dimonds";
+            deck.Top["name"] = "Queen";
             deck.Cards.Add(new Card());
-            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
-            deck.Cards[deck.Cards.Count - 1]["name"] = "1";
+            deck.Top["suit"] = "Spades";
+            deck.Top["name"] = "1";
 
             deckBeforeShuffle = deck.DeepCopy();
         };
