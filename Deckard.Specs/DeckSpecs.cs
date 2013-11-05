@@ -19,40 +19,25 @@ namespace Deckard.Specs
 
         Because of = () =>
         {
-            cards = new List<Card>();
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Dimonds";
 
-            newCard = new Card();
-            newCard["suit"] = "Spades";
-            cards.Add(newCard);
-            newCard = new Card();
-            newCard["suit"] = "Clubs";
-            cards.Add(newCard);
-
-            deck.Cards = cards;
             deck2 = deck.DeepCopy();
 
             smallerDeck = deck.DeepCopy();
             smallerDeck.Cards.RemoveAt(0);
 
             biggerDeck = deck.DeepCopy();
-            newCard = new Card();
-            newCard["suit"] = "Hearts";
-            biggerDeck.Cards.Add(newCard);
+            biggerDeck.Cards[biggerDeck.Cards.Count - 1]["suit"] = "Hearts";
 
-
-
-            differentCards = new List<Card>();
-            
-            newCard = new Card();
-            newCard["suit"] = "Dimonds";
-            newCard["name"] = "Queen";
-            differentCards.Add(newCard);
-            newCard = new Card();
-            newCard["suit"] = "Spades";
-            newCard["name"] = "1";
-            differentCards.Add(newCard);
-
-            differentDeck.Cards = differentCards;
+            differentDeck.Cards.Add(new Card());
+            differentDeck.Cards[differentDeck.Cards.Count - 1]["suit"] = "Dimonds";
+            differentDeck.Cards[differentDeck.Cards.Count - 1]["name"] = "Queen";
+            differentDeck.Cards.Add(new Card());
+            differentDeck.Cards[differentDeck.Cards.Count - 1]["suit"] = "Spades";
+            differentDeck.Cards[differentDeck.Cards.Count - 1]["name"] = "1";
         };
 
         It should_not_be_equal_if_cards_have_different_attributes = () =>
@@ -77,8 +62,36 @@ namespace Deckard.Specs
         static Deck smallerDeck;
         static Deck biggerDeck;
         static IShuffler shuffler;
-        static List<Card> cards;
-        static Card newCard;
-        static List<Card> differentCards;
+    }
+
+    [Subject("Deck")]
+    public class when_3_cards_are_added
+    {
+        Establish context = () =>
+        {
+            shuffler = new RandomNumberSortShuffler();
+            deck = new Deck(shuffler);
+        };
+
+        Because of = () =>
+        {
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Dimonds";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "Queen";
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "1";
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "Ace";
+        };
+                
+        It should_have_3_cards = () =>
+        {
+            deck.Cards.Count.ShouldEqual(3);
+        };
+
+        static Deck deck;
+        static RandomNumberSortShuffler shuffler;
     }
 }

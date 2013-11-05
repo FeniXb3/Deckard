@@ -10,32 +10,23 @@ namespace Deckard.Specs
         {
             shuffler = new RandomNumberSortShuffler();
             deck = new Deck(shuffler);
-            deckBeforeShuffle = deck.DeepCopy();
 
-            cards = new List<Card>();
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "Ace";
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Hearts";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "Queen";
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Clubs";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "King";
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Dimonds";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "Queen";
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "1";
 
-            newCard = new Card();
-            newCard["suit"] = "Spades";
-            newCard["name"] = "Ace";
-            cards.Add(newCard);
-            newCard = new Card();
-            newCard["suit"] = "Hearts";
-            newCard["name"] = "Queen";
-            cards.Add(newCard);
-            newCard = new Card();
-            newCard["suit"] = "Clubs";
-            newCard["name"] = "King";
-            cards.Add(newCard);
-            newCard = new Card();
-            newCard["suit"] = "Dimonds";
-            newCard["name"] = "Queen";
-            cards.Add(newCard);
-            newCard = new Card();
-            newCard["suit"] = "Spades";
-            newCard["name"] = "1";
-            cards.Add(newCard);
-
-            deck.Cards = cards;
             deckBeforeShuffle = deck.DeepCopy();
         };
 
@@ -52,8 +43,6 @@ namespace Deckard.Specs
         static Deck deck;
         static Deck deckBeforeShuffle;
         static IShuffler shuffler;
-        static List<Card> cards;
-        static Card newCard;
     }
 
     [Subject("Shuffler")]
@@ -63,32 +52,23 @@ namespace Deckard.Specs
         {
             shuffler = new KnuthFisherYatesShuffler();
             deck = new Deck(shuffler);
-            deckBeforeShuffle = deck.DeepCopy();
 
-            cards = new List<Card>();
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "Ace";
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Hearts";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "Queen";
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Clubs";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "King";
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Dimonds";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "Queen";
+            deck.Cards.Add(new Card());
+            deck.Cards[deck.Cards.Count - 1]["suit"] = "Spades";
+            deck.Cards[deck.Cards.Count - 1]["name"] = "1";
 
-            newCard = new Card();
-            newCard["suit"] = "Spades";
-            newCard["name"] = "Ace";
-            cards.Add(newCard);
-            newCard = new Card();
-            newCard["suit"] = "Hearts";
-            newCard["name"] = "Queen";
-            cards.Add(newCard);
-            newCard = new Card();
-            newCard["suit"] = "Clubs";
-            newCard["name"] = "King";
-            cards.Add(newCard);
-            newCard = new Card();
-            newCard["suit"] = "Dimonds";
-            newCard["name"] = "Queen";
-            cards.Add(newCard);
-            newCard = new Card();
-            newCard["suit"] = "Spades";
-            newCard["name"] = "1";
-            cards.Add(newCard);
-
-            deck.Cards = cards;
             deckBeforeShuffle = deck.DeepCopy();
         };
 
@@ -105,7 +85,5 @@ namespace Deckard.Specs
         static Deck deck;
         static Deck deckBeforeShuffle;
         static IShuffler shuffler;
-        static List<Card> cards;
-        static Card newCard;
     }
 }
