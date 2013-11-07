@@ -43,6 +43,7 @@
     <Compile Include="Deck.cs" />
     <Compile Include="IShuffler.cs" />
     <Compile Include="KnuthFisherYatesShuffler.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomNumberSortShuffler.cs" />
   </ItemGroup>

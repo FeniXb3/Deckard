@@ -23,6 +23,12 @@ namespace Deckard
             get { return (Cards.Count > 0) ? Cards[0] : null; }
         }
 
+
+        public int Size
+        {
+            get { return Cards.Count; }
+        }
+
         public IShuffler Shuffler
         {
             set { shuffler = value; }
@@ -123,5 +129,6 @@ namespace Deckard
 
             return newDeck;
         }
+
     }
 }
