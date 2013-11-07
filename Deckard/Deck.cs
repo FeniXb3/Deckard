@@ -130,5 +130,13 @@ namespace Deckard
             return newDeck;
         }
 
+
+        public Card TakeAndRemoveCard()
+        {
+            Card cardToTake = Top.DeepCopy();
+            Cards.Remove(Top);
+
+            return cardToTake;
+        }
     }
 }

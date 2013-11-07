@@ -11,8 +11,7 @@ namespace Deckard
 
         public void DrawFrom(Deck deck)
         {
-            DrawnCard = deck.Top.DeepCopy();
-            deck.Cards.Remove(deck.Top);
+            DrawnCard = deck.TakeAndRemoveCard();
         }
     }
 }
