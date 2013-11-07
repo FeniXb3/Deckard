@@ -7,11 +7,17 @@ namespace Deckard
 {
     public class Player
     {
-        public Card DrawnCard;
+        public Card CardInHand;
 
-        public void DrawFrom(Deck deck)
+        public void DrawFrom(Deck deck, int cardIndex = -1)
         {
-            DrawnCard = deck.TakeAndRemoveCard();
+            CardInHand = deck.TakeAndRemoveCard(cardIndex);
+        }
+
+        public void PutCardIn(Deck deck)
+        {
+            deck.Cards.Add(CardInHand.DeepCopy());
+            CardInHand = null;
         }
     }
 }

@@ -23,6 +23,11 @@ namespace Deckard
             get { return (Cards.Count > 0) ? Cards[0] : null; }
         }
 
+        public Card this[int cardIndex]
+        {
+            get { return Cards[cardIndex]; }
+        }
+
 
         public int Size
         {
@@ -130,11 +135,17 @@ namespace Deckard
             return newDeck;
         }
 
-
-        public Card TakeAndRemoveCard()
+        /// <summary>
+        /// Remove the card from a deck
+        /// </summary>
+        /// <param name="cardIndex">Optional index of a card to take and remove.</param>
+        /// <returns>A card at given index, or top card if the index was not provided or equals -1.</returns>
+        public Card TakeAndRemoveCard(int cardIndex = -1)
         {
-            Card cardToTake = Top.DeepCopy();
-            Cards.Remove(Top);
+            Card toRemove = (cardIndex < 0) ? Top : this[cardIndex];
+
+            Card cardToTake = toRemove.DeepCopy();
+            Cards.Remove(toRemove);
 
             return cardToTake;
         }
