@@ -7,6 +7,15 @@ namespace Deckard
 {
     public class Game
     {
+        public List<Deck> SourceDecks;
+        public List<Player> Heros { get; set; }
+
+        public Game()
+        {
+            SourceDecks = new List<Deck>();
+            Heros = new List<Player>();
+        }
+
         public void DealCards(Deck source, List<Deck> destinationDecks, int cardsCount = -1)
         {
             if (cardsCount == -1)
@@ -23,5 +32,6 @@ namespace Deckard
                 }
             }
         }
+
     }
 }

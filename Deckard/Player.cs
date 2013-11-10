@@ -19,5 +19,7 @@ namespace Deckard
             deck.Cards.Add(CardInHand.DeepCopy());
             CardInHand = null;
         }
+
+        public Deck Hand { get; set; }
     }
 }
