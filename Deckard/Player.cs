@@ -12,6 +12,7 @@ namespace Deckard
         public void DrawFrom(Deck deck, int cardIndex = -1)
         {
             CardInHand = deck.TakeAndRemoveCard(cardIndex);
+            CardInHand.OnDrawn(this, EventArgs.Empty);
         }
 
         public void PutCardIn(Deck deck)

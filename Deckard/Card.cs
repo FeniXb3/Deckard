@@ -8,6 +8,7 @@ namespace Deckard
     public class Card : IEquatable<Card>
     {
         public Dictionary<string, string> Attributes;
+        public event EventHandler Drawn;
 
         /// <summary>
         /// Get or set value of the given attribute
@@ -116,6 +117,15 @@ namespace Deckard
             }
 
             return newCard;
+        }
+
+
+        public void OnDrawn(object sender, EventArgs eventArgs)
+        {
+            if (Drawn != null)
+            {
+                Drawn(sender, eventArgs);
+            }
         }
     }
 }

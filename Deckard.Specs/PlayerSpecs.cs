@@ -14,6 +14,7 @@ namespace Deckard.Specs
     {
         Establish context = () =>
         {
+            drawingEventRaised = false;
             IShuffler shuffler = An<IShuffler>();
 
             player = new Player();
@@ -22,6 +23,8 @@ namespace Deckard.Specs
             deck.Cards.Add(new Card());
             deck.Top["suit"] = "Spades";
             deck.Top["name"] = "Ace";
+
+            deck.Top.Drawn += (o, e) => drawingEventRaised = true;
             
             cardsCount = deck.Size;
             exTopCard = deck.Top.DeepCopy();
@@ -43,10 +46,16 @@ namespace Deckard.Specs
             deck.Cards.ShouldNotContain(exTopCard);
         };
 
+        It should_invoke_card_defined_action_for_drawing_event = () =>
+        {
+            drawingEventRaised.ShouldBeTrue();
+        };
+
         static Player player;
         static Deck deck;
         static Card exTopCard;
         static int cardsCount;
+        static bool drawingEventRaised;
     }
 
     [Subject("Player")]
