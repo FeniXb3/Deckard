@@ -8,7 +8,9 @@ namespace Deckard
     public class Card : IEquatable<Card>
     {
         public Dictionary<string, string> Attributes;
-        public event EventHandler Drawn;
+        public delegate void CardActionEventHandler(object oSender, CardActionEventArgs oEventArgs);
+        public event CardActionEventHandler Drawn;
+        public event CardActionEventHandler Played;
 
         /// <summary>
         /// Get or set value of the given attribute
@@ -124,7 +126,16 @@ namespace Deckard
         {
             if (Drawn != null)
             {
-                Drawn(sender, eventArgs);
+                Drawn(sender, eventArgs as CardActionEventArgs);
+            }
+        }
+
+
+        public void OnPlayed(object sender, EventArgs eventArgs)
+        {
+            if (Played != null)
+            {
+                Played(sender, eventArgs as CardActionEventArgs);
             }
         }
     }

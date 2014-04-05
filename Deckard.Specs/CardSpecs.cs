@@ -84,4 +84,89 @@ namespace Deckard.Specs
         static Card cardWithLessAttributes;
         static Card cardWithDifferentAttributes;
     }
+
+    [Subject(typeof(Card))]
+    public class when_has_action_affecting_another_player_and_is_played
+    {
+        Establish context = () =>
+        {
+            lifesAttributeName = "lifes";
+            player = new Player();
+            player[lifesAttributeName] = 5;
+            oneLifeLess = player[lifesAttributeName] - 1;
+
+            enemy = new Player();
+            enemy[lifesAttributeName] = 1;
+            oneLifeMore = enemy[lifesAttributeName] + 1;
+            enemy.CardInHand = new Card();
+            enemy.CardInHand.Played += (o, e) => 
+            {
+                if (e.TargetPlayer != null)
+                    e.TargetPlayer[lifesAttributeName]--;
+            };
+        };
+
+        Because of = () =>
+        {
+            enemy.PlayCard(player);
+        };
+
+        It should_affect_another_player = () =>
+        {
+            player[lifesAttributeName].ShouldEqual(oneLifeLess);
+        };
+        
+        private static string lifesAttributeName;
+        private static int oneLifeLess, oneLifeMore;
+        private static Player player;
+        private static Player enemy;
+    }
+
+    [Subject(typeof(Card))]
+    public class when_has_action_affecting_player_who_plays_the_card_and_is_played
+    {
+        Establish context = () =>
+        {
+            lifesAttributeName = "lifes";
+
+            player = new Player();
+            player[lifesAttributeName] = 1;
+            oneLifeMore = player[lifesAttributeName] + 1;
+            player.CardInHand = new Card();
+            player.CardInHand.Played += (o, e) =>
+            {
+                (o as Player)[lifesAttributeName]++;
+            };
+        };
+
+        Because of = () =>
+        {
+            player.PlayCard();
+        };
+
+        It should_affect_player_who_played_the_card = () =>
+        {
+            player[lifesAttributeName].ShouldEqual(oneLifeMore);
+        };
+
+        private static string lifesAttributeName;
+        private static int oneLifeMore;
+        private static Player player;
+    }
+
+
+    //[Subject(typeof(Card))]
+    //[Ignore]
+    //public class when_has_action_affecting_another_card_and_is_played
+    //{
+
+    //    It should_affect_this_card = () =>
+    //    {
+    //        object ob;
+    //        //object.
+    //        //anotherCard[]
+    //    };
+
+    //    private static Card anotherCard;
+    //}
 }
