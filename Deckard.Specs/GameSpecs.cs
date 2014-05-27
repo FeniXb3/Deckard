@@ -205,4 +205,25 @@ namespace Deckard.Specs
         static int sourceSize;
         static Player hero1, hero2;
     }
+
+    [Subject(typeof(Game))]
+    class when_has_first_round_finished
+    {
+        Establish context = () => 
+        {
+            game = new Game();
+            game.CurrentRound = 1;
+        };
+
+        Because of = () => 
+        {
+            game.EndRound();            
+        };
+
+        It should_have_second_round_as_actual = () => 
+        {
+            game.CurrentRound.ShouldEqual(2);
+        };
+        static Game game;
+    }
 }

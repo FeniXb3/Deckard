@@ -33,5 +33,12 @@ namespace Deckard
             }
         }
 
+
+        public int CurrentRound { get; set; }
+
+        public void EndRound()
+        {
+            CurrentRound++;
+        }
     }
 }
