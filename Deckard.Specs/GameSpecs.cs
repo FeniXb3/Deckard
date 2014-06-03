@@ -212,7 +212,7 @@ namespace Deckard.Specs
         Establish context = () => 
         {
             game = new Game();
-            game.CurrentRound = 1;
+            game.Start();
         };
 
         Because of = () => 
@@ -222,8 +222,19 @@ namespace Deckard.Specs
 
         It should_have_second_round_as_actual = () => 
         {
-            game.CurrentRound.ShouldEqual(2);
+            game.CurrentRoundNumber.ShouldEqual(1);
         };
+
+        It should_have_first_round_set_as_closed = () =>
+        {
+            game.Rounds[0].State.ShouldEqual(RoundState.Closed);
+        };
+
+        It should_have_current_round_set_as_opened = () =>
+        {
+            game.CurrentRound.State.ShouldEqual(RoundState.Opened);
+        };
+
         static Game game;
     }
 }

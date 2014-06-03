@@ -14,6 +14,8 @@ namespace Deckard
         {
             SourceDecks = new List<Deck>();
             Heros = new List<Player>();
+            Rounds = new List<Round>();
+            CurrentRoundNumber = -1;
         }
 
         public void DealCards(Deck source, List<Deck> destinationDecks, int cardsCount = -1)
@@ -34,11 +36,40 @@ namespace Deckard
         }
 
 
-        public int CurrentRound { get; set; }
+        public int CurrentRoundNumber { get; set; }
 
         public void EndRound()
         {
-            CurrentRound++;
+            CurrentRound.Close();
+            NextRound();
         }
+
+        private void NextRound()
+        {
+            AddRound(RoundState.Opened);
+        }
+
+        private void AddRound(RoundState roundState)
+        {
+            Rounds.Add(new Round() { State = roundState });
+            if (roundState == RoundState.Opened)
+                CurrentRoundNumber = Rounds.Count - 1;
+        }
+
+        public List<Round> Rounds { get; set; }
+
+        public Round CurrentRound 
+        {
+            get 
+            {
+                return Rounds.FirstOrDefault(r => r.State == RoundState.Opened);
+            }
+        }
+
+        public void Start()
+        {
+            AddRound(RoundState.Opened);
+        }
+
     }
 }
