@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deckard", "Deckard\Deckard.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deckard.Specs", "Deckard.Specs\Deckard.Specs.csproj", "{D5F0DCC7-E3DD-4634-896A-D521CE48C82A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deckard.Examples.Specs", "Deckard.Examples.Specs\Deckard.Examples.Specs.csproj", "{80C96EAF-1D45-42B6-93C8-AD6CFFE345A8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BCB21383-AF8B-4C5B-815E-5FE07929B9C0} = {BCB21383-AF8B-4C5B-815E-5FE07929B9C0}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +26,10 @@ Global
 		{D5F0DCC7-E3DD-4634-896A-D521CE48C82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5F0DCC7-E3DD-4634-896A-D521CE48C82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5F0DCC7-E3DD-4634-896A-D521CE48C82A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C96EAF-1D45-42B6-93C8-AD6CFFE345A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C96EAF-1D45-42B6-93C8-AD6CFFE345A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C96EAF-1D45-42B6-93C8-AD6CFFE345A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C96EAF-1D45-42B6-93C8-AD6CFFE345A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
