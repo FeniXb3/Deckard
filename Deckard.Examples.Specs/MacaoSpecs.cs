@@ -8,7 +8,6 @@ namespace Deckard.Examples.Specs
     {
         Establish context = () => 
         {
-            //game = new Game();
             IShuffler shuffler = An<IShuffler>();
             source = new Deck(shuffler);
 
@@ -21,10 +20,8 @@ namespace Deckard.Examples.Specs
                 if (e.TargetPlayer == null)
                     throw new System.ArgumentException("Target player cannot be null.");
 
-                e.TargetPlayer.DrawFrom(source);
-                e.TargetPlayer.PutCardIn(e.TargetPlayer.Hand);
-                e.TargetPlayer.DrawFrom(source);
-                e.TargetPlayer.PutCardIn(e.TargetPlayer.Hand);
+                e.TargetPlayer.Draw(source);
+                e.TargetPlayer.Draw(source);
             };
             
             source.Cards.Add(An<Card>());
@@ -33,13 +30,12 @@ namespace Deckard.Examples.Specs
 
             player1 = new Player();
             player2 = new Player() { Hand = new Deck(shuffler) };
-
-            player1.DrawFrom(source);
             oldsSourceSize = source.Size;
             oldsHandSize = player2.Hand.Size;
         };
-        Because of = () => 
+        Because of = () =>
         {
+            player1.DrawFrom(source);
             player1.PlayCard(player2);
         };
         It should_have_drawn_2_cards = () =>

@@ -53,5 +53,16 @@ namespace Deckard
         }
 
         public Deck Hand { get; set; }
+
+        /// <summary>
+        /// Draw card from deck and put it in hand
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="cardIndex"></param>
+        public void Draw(Deck source, int cardIndex = -1)
+        {
+            DrawFrom(source, cardIndex);
+            PutCardIn(Hand);
+        }
     }
 }
