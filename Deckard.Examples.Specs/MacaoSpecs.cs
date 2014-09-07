@@ -116,6 +116,35 @@ namespace Deckard.Examples.Specs
         public static int cardsToTake;
     }
 
+    [Subject("Next player")]
+    class when_non_function_card_is_played : when_game_is_established_and_started
+    {
+        Because of = () =>
+        {
+            cardsToTake = 1;
+            game.Start();
+            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            handSizeBeforeAction = game.NextPlayer.Hand.Size;
+
+            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "8" && c["suit"] == "Hearts");
+            game.CurrentPlayer.PlayCard(game.NextPlayer);
+            game.EndRound();
+
+            game.EndRound();
+        };
+
+        It should_have_taken_1_card = () =>
+        {
+            game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+            game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
+        };
+
+        public static int sourceSizeBeforeAction;
+        public static int handSizeBeforeAction;
+        public static int cardsToTake;
+    }
+
+
     public class when_game_is_established_and_started : WithFakes
     {
         Establish context = () =>
@@ -125,6 +154,12 @@ namespace Deckard.Examples.Specs
             #endif
 
             game = new Game();
+            game.DefaultAction += (o, e) =>
+            {
+                e.TargetPlayer.Draw(game.SourceDecks[0]);
+            };
+
+
             IShuffler shuffler = new RandomNumberSortShuffler();
             game.SourceDecks.Add(SetupDeck(shuffler));
 
@@ -177,6 +212,12 @@ namespace Deckard.Examples.Specs
             deck.MoveToTop(c => c["value"] == "2" && c["suit"] == "Spades");
             // 1
             deck.MoveToTop(c => c["value"] == "King" && c["suit"] == "Hearts");
+            // 3
+            deck.MoveToTop(c => c["value"] == "8" && c["suit"] == "Diamonds");
+            // 2
+            deck.MoveToTop(c => c["value"] == "10" && c["suit"] == "Hearts");
+            // 1
+            deck.MoveToTop(c => c["value"] == "8" && c["suit"] == "Hearts");
 
             return deck;
         }
@@ -198,12 +239,13 @@ namespace Deckard.Examples.Specs
                     Game.PlayerActionEventHandler action = null;
                     action += (ao, ae) =>
                     {
-                        game.DealCards(game.SourceDecks[0], new List<Deck> { ae.TargetPlayer.Hand }, cardsToTake);
+                        while (cardsToTake-- > 0)
+                            ae.TargetPlayer.Draw(game.SourceDecks[0]);
 
-                        game.Action -= action;
+                        game.CustomAction -= action;
                     };
 
-                    game.Action += action;
+                    game.CustomAction += action;
                 };
             }
 
@@ -220,12 +262,13 @@ namespace Deckard.Examples.Specs
                     Game.PlayerActionEventHandler action = null;
                     action += (ao, ae) =>
                     {
-                        game.DealCards(game.SourceDecks[0], new List<Deck> { e.TargetPlayer.Hand }, cardsToTake);
+                        while (cardsToTake-- > 0)
+                            ae.TargetPlayer.Draw(game.SourceDecks[0]);
 
-                        game.Action -= action;
+                        game.CustomAction -= action;
                     };
 
-                    game.Action += action;
+                    game.CustomAction += action;
                 };
             }
 

@@ -42,7 +42,10 @@ namespace Deckard
         {
             if (CurrentPlayer.CardsPlayed == 0)
             {
-                OnActionTaken(this, new PlayerActionEventArgs(CurrentPlayer));
+                if(CustomAction == null)
+                    OnDefaultActionTaken(this, new PlayerActionEventArgs(CurrentPlayer));
+                else
+                    OnCustomActionTaken(this, new PlayerActionEventArgs(CurrentPlayer));
             }
 
             CurrentRound.Close();
@@ -108,14 +111,23 @@ namespace Deckard
 
 
         public delegate void PlayerActionEventHandler(object oSender, PlayerActionEventArgs oEventArgs);
-        public event PlayerActionEventHandler Action;
-
-
-        public void OnActionTaken(object sender, EventArgs eventArgs)
+        public event PlayerActionEventHandler CustomAction;
+        public event PlayerActionEventHandler DefaultAction;
+        
+        public void OnCustomActionTaken(object sender, EventArgs eventArgs)
         {
-            if (Action != null)
+            if (CustomAction != null)
             {
-                Action(sender, eventArgs as PlayerActionEventArgs);
+                CustomAction(sender, eventArgs as PlayerActionEventArgs);
+            }
+        }
+
+
+        public void OnDefaultActionTaken(object sender, EventArgs eventArgs)
+        {
+            if (DefaultAction != null)
+            {
+                DefaultAction(sender, eventArgs as PlayerActionEventArgs);
             }
         }
 
