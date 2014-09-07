@@ -149,5 +149,16 @@ namespace Deckard
 
             return cardToTake;
         }
+
+        public void MoveToTop(Predicate<Card> match)
+        {
+            if (!Cards.Exists(match))
+                throw new ArgumentException("There is no such card in deck.");
+
+            int cardIndex = Cards.FindIndex(match);
+            Card cardToMove = Cards[cardIndex];
+            Cards.RemoveAt(cardIndex);
+            Cards.Add(cardToMove);
+        }
     }
 }

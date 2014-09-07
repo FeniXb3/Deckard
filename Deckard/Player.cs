@@ -50,6 +50,8 @@ namespace Deckard
 
             CardActionEventArgs cae = new CardActionEventArgs(targetPlayer);
             CardInHand.OnPlayed(this, cae);
+
+            CardsPlayed++;
         }
 
         public Deck Hand { get; set; }
@@ -64,5 +66,15 @@ namespace Deckard
             DrawFrom(source, cardIndex);
             PutCardIn(Hand);
         }
+
+        public void ChooseCardToPlay(Predicate<Card> match)
+        {
+            if (!Hand.Cards.Exists(match))
+                throw new ArgumentException("The player does not have such card.");
+
+            CardInHand = Hand.Cards.Find(match);
+        }
+
+        public int CardsPlayed { get; set; }
     }
 }

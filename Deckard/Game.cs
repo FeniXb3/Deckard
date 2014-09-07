@@ -40,7 +40,14 @@ namespace Deckard
 
         public void EndRound()
         {
+            if (CurrentPlayer.CardsPlayed == 0)
+            {
+                OnActionTaken(this, new PlayerActionEventArgs(CurrentPlayer));
+            }
+
             CurrentRound.Close();
+            CurrentPlayerNumber = (CurrentPlayerNumber + 1) % Heros.Count;
+            CurrentPlayer.CardsPlayed = 0;
             NextRound();
         }
 
@@ -71,5 +78,45 @@ namespace Deckard
             AddRound(RoundState.Opened);
         }
 
+        public Player CurrentPlayer
+        {
+            get
+            {
+                return Heros[CurrentPlayerNumber];
+            }
+        }
+
+        public Player NextPlayer
+        {
+            get
+            {
+                return Heros[(CurrentPlayerNumber + 1) % Heros.Count];
+            }
+        }
+
+        public Player PreviousPlayer
+        {
+            get
+            {
+                int prevNumber = CurrentPlayerNumber == 0 ? Heros.Count - 1 : CurrentPlayerNumber - 1;
+                return Heros[prevNumber];
+            }
+        }
+
+
+        public int CurrentPlayerNumber { get; set; }
+
+
+        public delegate void PlayerActionEventHandler(object oSender, PlayerActionEventArgs oEventArgs);
+        public event PlayerActionEventHandler Action;
+
+
+        public void OnActionTaken(object sender, EventArgs eventArgs)
+        {
+            if (Action != null)
+            {
+                Action(sender, eventArgs as PlayerActionEventArgs);
+            }
+        }
     }
 }

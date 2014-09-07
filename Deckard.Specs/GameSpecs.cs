@@ -212,6 +212,7 @@ namespace Deckard.Specs
         Establish context = () => 
         {
             game = new Game();
+            game.Heros.Add(new Player());
             game.Start();
         };
 

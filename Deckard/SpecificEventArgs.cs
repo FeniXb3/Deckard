@@ -27,4 +27,17 @@ namespace Deckard
         //    TargetPlayer = targetPlayer;
         //}
     }
+
+
+    public class PlayerActionEventArgs : EventArgs
+    {
+        
+        public Player TargetPlayer;
+
+
+        public PlayerActionEventArgs(Player targetPlayer)
+        {
+            TargetPlayer = targetPlayer;
+        }
+    }
 }
