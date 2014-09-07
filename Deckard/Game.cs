@@ -118,5 +118,16 @@ namespace Deckard
                 Action(sender, eventArgs as PlayerActionEventArgs);
             }
         }
+
+        public void DealFirstCards(int cardsCount)
+        {
+            List<Deck> allHands = new List<Deck>();
+
+            foreach (var player in Heros)
+                allHands.Add(player.Hand);
+
+            DealCards(SourceDecks[0], allHands, cardsCount);
+        
+        }
     }
 }

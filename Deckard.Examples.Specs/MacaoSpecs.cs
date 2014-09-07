@@ -183,14 +183,19 @@ namespace Deckard.Examples.Specs
     {
         Establish context = () =>
         {
+            #if DEBUG
+                System.Threading.Thread.Sleep(10000);
+            #endif
+
             game = new Game();
             IShuffler shuffler = new RandomNumberSortShuffler();
             game.SourceDecks.Add(SetupDeck(shuffler));
 
             game.Heros.Add(new Player() { Hand = new Deck(shuffler) });
             game.Heros.Add(new Player() { Hand = new Deck(shuffler) });
+            game.Heros.Add(new Player() { Hand = new Deck(shuffler) });
 
-            game.DealCards(game.SourceDecks[0], new List<Deck> { game.Heros[0].Hand, game.Heros[1].Hand }, 5);
+            game.DealFirstCards(5);
         };
 
         public static Deck SetupDeck(IShuffler shuffler)
@@ -217,10 +222,23 @@ namespace Deckard.Examples.Specs
             deck = SetupFunctionalCards(deck);
 
             deck.Shuffle();
-            deck.MoveToTop(c => c["value"] == "2" && c["suit"] == "Clubs");
+            // 3
+            deck.MoveToTop(c => c["value"] == "5" && c["suit"] == "Clubs");
+            // 2
             deck.MoveToTop(c => c["value"] == "King" && c["suit"] == "Spades");
-            deck.MoveToTop(c => c["value"] == "3" && c["suit"] == "Diamonds");
+            // 1
+            deck.MoveToTop(c => c["value"] == "2" && c["suit"] == "Clubs");
+            // 3
+            deck.MoveToTop(c => c["value"] == "10" && c["suit"] == "Diamonds");
+            // 2
             deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == "Hearts");
+            // 1
+            deck.MoveToTop(c => c["value"] == "3" && c["suit"] == "Diamonds");
+            // 3
+            deck.MoveToTop(c => c["value"] == "7" && c["suit"] == "Spades");
+            // 2
+            deck.MoveToTop(c => c["value"] == "9" && c["suit"] == "Clubs");
+            // 1
             deck.MoveToTop(c => c["value"] == "King" && c["suit"] == "Hearts");
 
             return deck;
