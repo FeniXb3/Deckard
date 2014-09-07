@@ -14,7 +14,7 @@ namespace Deckard.Examples.Specs
             sourceSizeBeforeAction = game.SourceDecks[0].Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "2" && c["suit"] == "Clubs");
+            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "2" && c["suit"] == Clubs);
             game.CurrentPlayer.PlayCard(game.NextPlayer);
             game.EndRound();
 
@@ -25,10 +25,6 @@ namespace Deckard.Examples.Specs
             game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
             game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
         };
-        
-        public static int sourceSizeBeforeAction;
-        public static int handSizeBeforeAction;
-        public static int cardsToTake;
     }
 
     [Subject("Next player")]
@@ -41,7 +37,7 @@ namespace Deckard.Examples.Specs
             sourceSizeBeforeAction = game.SourceDecks[0].Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "3" && c["suit"] == "Diamonds");
+            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "3" && c["suit"] == Diamonds);
             game.CurrentPlayer.PlayCard(game.NextPlayer);
             game.EndRound();
 
@@ -52,10 +48,6 @@ namespace Deckard.Examples.Specs
             game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
             game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
         };
-
-        public static int sourceSizeBeforeAction;
-        public static int handSizeBeforeAction;
-        public static int cardsToTake;
     }
     
     [Subject("Next player")]
@@ -68,7 +60,7 @@ namespace Deckard.Examples.Specs
             sourceSizeBeforeAction = game.SourceDecks[0].Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "King" && c["suit"] == "Hearts");
+            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "King" && c["suit"] == Hearts);
             game.CurrentPlayer.PlayCard(game.NextPlayer);
             game.EndRound();
 
@@ -79,10 +71,6 @@ namespace Deckard.Examples.Specs
             game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
             game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
         };
-
-        public static int sourceSizeBeforeAction;
-        public static int handSizeBeforeAction;
-        public static int cardsToTake;
     }
 
     [Subject("Third player")]
@@ -95,11 +83,11 @@ namespace Deckard.Examples.Specs
             sourceSizeBeforeAction = game.SourceDecks[0].Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "3" && c["suit"] == "Diamonds");
+            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "3" && c["suit"] == Diamonds);
             game.CurrentPlayer.PlayCard(game.NextPlayer);
             game.EndRound();
 
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "2" && c["suit"] == "Spades");
+            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "2" && c["suit"] == Spades);
             game.CurrentPlayer.PlayCard(game.NextPlayer);
             game.EndRound();
             
@@ -110,10 +98,6 @@ namespace Deckard.Examples.Specs
             game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
             game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
         };
-
-        public static int sourceSizeBeforeAction;
-        public static int handSizeBeforeAction;
-        public static int cardsToTake;
     }
 
     [Subject("Next player")]
@@ -126,7 +110,7 @@ namespace Deckard.Examples.Specs
             sourceSizeBeforeAction = game.SourceDecks[0].Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "8" && c["suit"] == "Hearts");
+            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "8" && c["suit"] == Hearts);
             game.CurrentPlayer.PlayCard(game.NextPlayer);
             game.EndRound();
 
@@ -138,10 +122,6 @@ namespace Deckard.Examples.Specs
             game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
             game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
         };
-
-        public static int sourceSizeBeforeAction;
-        public static int handSizeBeforeAction;
-        public static int cardsToTake;
     }
 
 
@@ -174,7 +154,7 @@ namespace Deckard.Examples.Specs
         {
             Deck deck = new Deck(shuffler);
 
-            List<string> suits = new List<string> { "Hearts", "Diamonds", "Clubs", "Spades" };
+            List<string> suits = new List<string> { Hearts, Diamonds, Clubs, Spades };
             List<string> values = new List<string> { "Ace", "King", "Queen", "Jack" };
             for (int i = 10; i > 1; i--)
             {
@@ -184,7 +164,7 @@ namespace Deckard.Examples.Specs
             foreach (var suit in suits)
             {
                 foreach (var value in values)
-                { 
+                {
                     Card card = new Card();
                     card["value"] = value;
                     card["suit"] = suit;
@@ -194,30 +174,18 @@ namespace Deckard.Examples.Specs
             deck = SetupFunctionalCards(deck);
 
             deck.Shuffle();
-            // 3
-            deck.MoveToTop(c => c["value"] == "5" && c["suit"] == "Clubs");
-            // 2
-            deck.MoveToTop(c => c["value"] == "King" && c["suit"] == "Spades");
-            // 1
-            deck.MoveToTop(c => c["value"] == "2" && c["suit"] == "Clubs");
-            // 3
-            deck.MoveToTop(c => c["value"] == "10" && c["suit"] == "Diamonds");
-            // 2
-            deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == "Hearts");
-            // 1
-            deck.MoveToTop(c => c["value"] == "3" && c["suit"] == "Diamonds");
-            // 3
-            deck.MoveToTop(c => c["value"] == "7" && c["suit"] == "Spades");
-            // 2
-            deck.MoveToTop(c => c["value"] == "2" && c["suit"] == "Spades");
-            // 1
-            deck.MoveToTop(c => c["value"] == "King" && c["suit"] == "Hearts");
-            // 3
-            deck.MoveToTop(c => c["value"] == "8" && c["suit"] == "Diamonds");
-            // 2
-            deck.MoveToTop(c => c["value"] == "10" && c["suit"] == "Hearts");
-            // 1
-            deck.MoveToTop(c => c["value"] == "8" && c["suit"] == "Hearts");
+            deck.MoveToTop(c => c["value"] == "5" && c["suit"] == Clubs);       // 3
+            deck.MoveToTop(c => c["value"] == "King" && c["suit"] == Spades);   // 2
+            deck.MoveToTop(c => c["value"] == "2" && c["suit"] == Clubs);       // 1
+            deck.MoveToTop(c => c["value"] == "10" && c["suit"] == Diamonds);   // 3
+            deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Hearts);  // 2
+            deck.MoveToTop(c => c["value"] == "3" && c["suit"] == Diamonds);    // 1
+            deck.MoveToTop(c => c["value"] == "7" && c["suit"] == Spades);      // 3
+            deck.MoveToTop(c => c["value"] == "2" && c["suit"] == Spades);      // 2
+            deck.MoveToTop(c => c["value"] == "King" && c["suit"] == Hearts);   // 1
+            deck.MoveToTop(c => c["value"] == "8" && c["suit"] == Diamonds);    // 3
+            deck.MoveToTop(c => c["value"] == "10" && c["suit"] == Hearts);     // 2
+            deck.MoveToTop(c => c["value"] == "8" && c["suit"] == Hearts);      // 1
 
             return deck;
         }
@@ -250,7 +218,7 @@ namespace Deckard.Examples.Specs
             }
 
             // setup Kings
-            cards = deck.Cards.FindAll(c => c["value"] == "King" && c["suit"] == "Hearts");
+            cards = deck.Cards.FindAll(c => c["value"] == "King" && c["suit"] == Hearts);
             foreach (var card in cards)
             {
                 int cardsToTake = 5;
@@ -276,5 +244,13 @@ namespace Deckard.Examples.Specs
         }
 
         public static Game game;
+        public static int sourceSizeBeforeAction;
+        public static int handSizeBeforeAction;
+        public static int cardsToTake;
+
+        protected const string Hearts = "Hearts";
+        protected const string Diamonds = "Diamonds";
+        protected const string Clubs = "Clubs";
+        protected const string Spades = "Spades";
     }
 }
