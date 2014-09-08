@@ -144,10 +144,22 @@ namespace Deckard
 
         public Deck DestinationDeck { get; set; }
         public Predicate<Card> NextCardCriteria;
+        public Predicate<Card> CustomNextCardCriteria;
 
         public bool CheckCard(Card card)
         {
-            return NextCardCriteria(card);
+            bool isValid = false;
+
+            if (CustomNextCardCriteria != null)
+            {
+                isValid = CustomNextCardCriteria(card);
+            }
+            else
+            {
+                isValid = NextCardCriteria(card);
+            }
+
+            return isValid;
         }
     }
 }

@@ -72,12 +72,14 @@ namespace Deckard
             PutCardIn(Hand);
         }
 
-        public void ChooseCardToPlay(Predicate<Card> match)
+        public Card ChooseCardToPlay(Predicate<Card> match)
         {
             if (!Hand.Cards.Exists(match))
                 throw new ArgumentException("The player does not have such card.");
 
             CardInHand = Hand.TakeAndRemoveCard(Hand.Cards.FindIndex(match));
+
+            return CardInHand;
         }
 
         public int CardsPlayed { get; set; }
