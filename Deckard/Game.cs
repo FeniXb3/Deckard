@@ -141,5 +141,13 @@ namespace Deckard
             DealCards(SourceDecks[0], allHands, cardsCount);
         
         }
+
+        public Deck DestinationDeck { get; set; }
+        public Predicate<Card> NextCardCriteria;
+
+        public bool CheckCard(Card card)
+        {
+            return NextCardCriteria(card);
+        }
     }
 }

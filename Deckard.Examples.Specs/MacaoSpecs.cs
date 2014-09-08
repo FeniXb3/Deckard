@@ -101,7 +101,7 @@ namespace Deckard.Examples.Specs
     }
 
     [Subject("Next player")]
-    class when_non_function_card_is_played : when_game_is_established_and_started
+    class when_nonfunction_card_is_played : when_game_is_established_and_started
     {
         Because of = () =>
         {
@@ -111,10 +111,34 @@ namespace Deckard.Examples.Specs
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "8" && c["suit"] == Hearts);
-            game.CurrentPlayer.PlayCard(game.NextPlayer);
+            game.CurrentPlayer.PlayCard(game.NextPlayer, game.DestinationDeck);
             game.EndRound();
 
             game.EndRound();
+        };
+
+        It should_be_able_to_play_card_of_the_same_suit = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.PreviousPlayer.Hand.Cards.Find(c => c["suit"] == Hearts));
+            couldBePlayed.ShouldEqual(true);
+        };
+
+        It should_be_able_to_play_card_of_the_same_value = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.PreviousPlayer.Hand.Cards.Find(c => c["value"] == "8"));
+            couldBePlayed.ShouldEqual(true);
+        };
+
+        It should_be_able_to_play_Queen = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.PreviousPlayer.Hand.Cards.Find(c => c["value"] == "Queen"));
+            couldBePlayed.ShouldEqual(true);
+        };
+
+        It should_not_be_able_to_play_any_other_card = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.PreviousPlayer.Hand.Cards.Find(c => c["value"] != "Queen" && c["value"] != "8" && c["suit"] != Hearts));
+            couldBePlayed.ShouldEqual(false);
         };
 
         It should_have_taken_1_card = () =>
@@ -123,7 +147,6 @@ namespace Deckard.Examples.Specs
             game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
         };
     }
-
 
     public class when_game_is_established_and_started : WithFakes
     {
@@ -138,16 +161,22 @@ namespace Deckard.Examples.Specs
             {
                 e.TargetPlayer.Draw(game.SourceDecks[0]);
             };
+            game.NextCardCriteria = (c => c["value"] == game.DestinationDeck.Top["value"] 
+                || c["suit"] == game.DestinationDeck.Top["suit"]
+                || c["value"] == "Queen");
 
 
             IShuffler shuffler = new RandomNumberSortShuffler();
             game.SourceDecks.Add(SetupDeck(shuffler));
+            game.DestinationDeck = new Deck(shuffler);
 
             game.Heros.Add(new Player() { Attributes = new Dictionary<string, int> { { "number", 1 } }, Hand = new Deck(shuffler) });
             game.Heros.Add(new Player() { Attributes = new Dictionary<string, int> { { "number", 2 } }, Hand = new Deck(shuffler) });
             game.Heros.Add(new Player() { Attributes = new Dictionary<string, int> { { "number", 3 } }, Hand = new Deck(shuffler) });
 
             game.DealFirstCards(5);
+
+            //game.DealCards(game.SourceDecks[0], new List<Deck>() { game.DestinationDeck }, 1);
         };
 
         public static Deck SetupDeck(IShuffler shuffler)
@@ -178,7 +207,7 @@ namespace Deckard.Examples.Specs
             deck.MoveToTop(c => c["value"] == "King" && c["suit"] == Spades);   // 2
             deck.MoveToTop(c => c["value"] == "2" && c["suit"] == Clubs);       // 1
             deck.MoveToTop(c => c["value"] == "10" && c["suit"] == Diamonds);   // 3
-            deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Hearts);  // 2
+            deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Clubs);   // 2
             deck.MoveToTop(c => c["value"] == "3" && c["suit"] == Diamonds);    // 1
             deck.MoveToTop(c => c["value"] == "7" && c["suit"] == Spades);      // 3
             deck.MoveToTop(c => c["value"] == "2" && c["suit"] == Spades);      // 2
@@ -186,6 +215,9 @@ namespace Deckard.Examples.Specs
             deck.MoveToTop(c => c["value"] == "8" && c["suit"] == Diamonds);    // 3
             deck.MoveToTop(c => c["value"] == "10" && c["suit"] == Hearts);     // 2
             deck.MoveToTop(c => c["value"] == "8" && c["suit"] == Hearts);      // 1
+            deck.MoveToTop(c => c["value"] == "9" && c["suit"] == Diamonds);    // 3
+            deck.MoveToTop(c => c["value"] == "8" && c["suit"] == Clubs);       // 2
+            deck.MoveToTop(c => c["value"] == "6" && c["suit"] == Hearts);      // 1
 
             return deck;
         }

@@ -43,13 +43,18 @@ namespace Deckard
             CardInHand = null;
         }
 
-        public void PlayCard(Player targetPlayer = null)
+        public void PlayCard(Player targetPlayer = null, Deck targetDeck = null)
         {
             if (targetPlayer == null)
                 targetPlayer = this;
 
             CardActionEventArgs cae = new CardActionEventArgs(targetPlayer);
             CardInHand.OnPlayed(this, cae);
+
+            if (targetDeck != null)
+            {
+                PutCardIn(targetDeck);
+            }
 
             CardsPlayed++;
         }
@@ -72,7 +77,7 @@ namespace Deckard
             if (!Hand.Cards.Exists(match))
                 throw new ArgumentException("The player does not have such card.");
 
-            CardInHand = Hand.Cards.Find(match);
+            CardInHand = Hand.TakeAndRemoveCard(Hand.Cards.FindIndex(match));
         }
 
         public int CardsPlayed { get; set; }
