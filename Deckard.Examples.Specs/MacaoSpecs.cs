@@ -203,6 +203,44 @@ namespace Deckard.Examples.Specs
         };
     }
 
+    [Subject("Next player")]
+    class when_current_player_plays_Queen_of_any_suit : when_game_is_established_and_started
+    {
+        Because of = () =>
+        {
+            cardsToTake = 3;
+            game.Start();
+            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            handSizeBeforeAction = game.NextPlayer.Hand.Size;
+
+            ChoosePlayAndEnd(c => c["value"] == "Queen" && c["suit"] == Hearts);
+        };
+
+        It should_be_able_to_play_card_of_the_same_suit = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["suit"] == Hearts));
+            couldBePlayed.ShouldEqual(true);
+        };
+
+        It should_be_able_to_play_card_of_the_same_value = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["value"] == "Queen"));
+            couldBePlayed.ShouldEqual(true);
+        };
+
+        It should_be_able_to_play_card_of_another_suit = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["suit"] != Hearts));
+            couldBePlayed.ShouldEqual(true);
+        };
+
+        It should_be_able_to_play_card_of_another_value = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["value"] != "Queen"));
+            couldBePlayed.ShouldEqual(true);
+        };
+    }
+
     public class when_game_is_established_and_started : WithFakes
     {
         Establish context = () =>
@@ -278,7 +316,7 @@ namespace Deckard.Examples.Specs
 
             deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Diamonds);    // 3
             deck.MoveToTop(c => c["value"] == "8" && c["suit"] == Hearts);       // 2
-            deck.MoveToTop(c => c["value"] == "6" && c["suit"] == Hearts);      // 1
+            deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Hearts);      // 1
 
             return deck;
         }
@@ -303,8 +341,8 @@ namespace Deckard.Examples.Specs
                         while (cardsToTake-- > 0)
                             ae.TargetPlayer.Draw(game.SourceDecks[0]);
 
-                        game.CustomAction -= action;
                         game.CustomNextCardCriteria = null;
+                        game.CustomAction -= action;
                     };
                     game.CustomAction += action;
 
@@ -329,13 +367,35 @@ namespace Deckard.Examples.Specs
                         while (cardsToTake-- > 0)
                             ae.TargetPlayer.Draw(game.SourceDecks[0]);
 
-                        game.CustomAction -= action;
                         game.CustomNextCardCriteria = null;
+                        game.CustomAction -= action;
                     };
                     game.CustomAction += action;
 
                     game.CustomNextCardCriteria = (c => c["value"] == "2" || c["value"] == "3"
                         || (c["value"] == "King" && (c["suit"] == Hearts || c["suit"] == Spades)));
+                };
+            }
+
+            // setup Queens
+            cards = deck.Cards.FindAll(c => c["value"] == "Queen");
+            foreach (var card in cards)
+            {
+                int cardsToTake = 5;
+                card.Played += (o, e) =>
+                {
+                    Game.PlayerActionEventHandler action = null;
+                    action += (ao, ae) =>
+                    {
+                        game.CustomNextCardCriteria = null;
+                        game.CustomAction -= action;
+                    };
+                    game.CustomAction += action;
+
+                    game.CustomNextCardCriteria = (c => c["value"] == game.DestinationDeck.Top["value"]
+                                                    || c["suit"] == game.DestinationDeck.Top["suit"]
+                                                    || c["value"] != game.DestinationDeck.Top["value"]
+                                                    || c["suit"] != game.DestinationDeck.Top["suit"]);
                 };
             }
 
