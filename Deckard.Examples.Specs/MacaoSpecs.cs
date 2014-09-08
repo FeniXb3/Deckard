@@ -1,11 +1,12 @@
 ﻿using Machine.Fakes;
 using Machine.Specifications;
+using System;
 using System.Collections.Generic;
 
 namespace Deckard.Examples.Specs
 {
     [Subject("Next player")]
-    class when_current_player_plays_2_of_any_suit : when_game_is_established_and_started
+    class when_current_player_plays_2_of_any_suit_and_he_did_not_play_any_card : when_game_is_established_and_started
     {
         Because of = () =>
         {
@@ -14,21 +15,22 @@ namespace Deckard.Examples.Specs
             sourceSizeBeforeAction = game.SourceDecks[0].Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "2" && c["suit"] == Clubs);
-            game.CurrentPlayer.PlayCard(game.NextPlayer);
-            game.EndRound();
-
-            game.EndRound();
+            ChoosePlayAndEnd(c => c["value"] == "2" && c["suit"] == Clubs);
+            EndTurnWithoutPlayingCard();
         };
-        It should_have_drawn_2_cards_at_the_end_of_round = () =>
+
+        It should_have_taken_2_card_from_deck = () =>
         {
             game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+        };
+        It should_have_2_more_card_in_hand = () =>
+        {
             game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
         };
     }
 
     [Subject("Next player")]
-    class when_current_player_plays_3_of_any_suit : when_game_is_established_and_started
+    class when_current_player_plays_3_of_any_suit_and_he_did_not_play_any_card : when_game_is_established_and_started
     {
         Because of = () =>
         {
@@ -37,21 +39,22 @@ namespace Deckard.Examples.Specs
             sourceSizeBeforeAction = game.SourceDecks[0].Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "3" && c["suit"] == Diamonds);
-            game.CurrentPlayer.PlayCard(game.NextPlayer);
-            game.EndRound();
-
-            game.EndRound();
+            ChoosePlayAndEnd(c => c["value"] == "3" && c["suit"] == Diamonds);
+            EndTurnWithoutPlayingCard();
         };
-        It should_have_drawn_3_cards_at_the_end_of_round = () =>
+
+        It should_have_taken_3_card_from_deck = () =>
         {
             game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+        };
+        It should_have_3_more_card_in_hand = () =>
+        {
             game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
         };
     }
     
     [Subject("Next player")]
-    class when_current_player_plays_King_of_Hearts : when_game_is_established_and_started
+    class when_current_player_plays_King_of_Hearts_and_he_did_not_play_any_card : when_game_is_established_and_started
     {
         Because of = () =>
         {
@@ -60,21 +63,22 @@ namespace Deckard.Examples.Specs
             sourceSizeBeforeAction = game.SourceDecks[0].Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "King" && c["suit"] == Hearts);
-            game.CurrentPlayer.PlayCard(game.NextPlayer);
-            game.EndRound();
-
-            game.EndRound();
+            ChoosePlayAndEnd(c => c["value"] == "King" && c["suit"] == Hearts);
+            EndTurnWithoutPlayingCard();
         };
-        It should_have_drawn_5_cards_at_the_end_of_round = () =>
+
+        It should_have_taken_5_card_from_deck = () =>
         {
             game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+        };
+        It should_have_5_more_card_in_hand = () =>
+        {
             game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
         };
     }
 
     [Subject("Third player")]
-    class when_current_player_plays_3_of_any_suit_and_second_player_plays_2_of_any_suit : when_game_is_established_and_started
+    class when_current_player_plays_3_of_any_suit_and_second_player_plays_2_of_any_suit_and_he_did_not_play_any_card : when_game_is_established_and_started
     {
         Because of = () =>
         {
@@ -83,25 +87,23 @@ namespace Deckard.Examples.Specs
             sourceSizeBeforeAction = game.SourceDecks[0].Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "3" && c["suit"] == Diamonds);
-            game.CurrentPlayer.PlayCard(game.NextPlayer);
-            game.EndRound();
-
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "2" && c["suit"] == Spades);
-            game.CurrentPlayer.PlayCard(game.NextPlayer);
-            game.EndRound();
-            
-            game.EndRound();
+            ChoosePlayAndEnd(c => c["value"] == "3" && c["suit"] == Diamonds);  // 1
+            ChoosePlayAndEnd(c => c["value"] == "2" && c["suit"] == Spades);    // 2
+            EndTurnWithoutPlayingCard();                                        // 3
         };
-        It should_have_drawn_5_cards_at_the_end_of_round = () =>
+
+        It should_have_taken_5_card_from_deck = () =>
         {
             game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+        };
+        It should_have_5_more_card_in_hand = () =>
+        {
             game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
         };
     }
 
     [Subject("Next player")]
-    class when_nonfunction_card_is_played : when_game_is_established_and_started
+    class when_nonfunction_card_is_played_and_wants_to_play_a_card : when_game_is_established_and_started
     {
         Because of = () =>
         {
@@ -110,40 +112,54 @@ namespace Deckard.Examples.Specs
             sourceSizeBeforeAction = game.SourceDecks[0].Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
-            game.CurrentPlayer.ChooseCardToPlay(c => c["value"] == "8" && c["suit"] == Hearts);
-            game.CurrentPlayer.PlayCard(game.NextPlayer, game.DestinationDeck);
-            game.EndRound();
-
-            game.EndRound();
+            ChoosePlayAndEnd(c => c["value"] == "8" && c["suit"] == Hearts);
         };
 
         It should_be_able_to_play_card_of_the_same_suit = () =>
         {
-            bool couldBePlayed = game.CheckCard(game.PreviousPlayer.Hand.Cards.Find(c => c["suit"] == Hearts));
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["suit"] == Hearts));
             couldBePlayed.ShouldEqual(true);
         };
 
         It should_be_able_to_play_card_of_the_same_value = () =>
         {
-            bool couldBePlayed = game.CheckCard(game.PreviousPlayer.Hand.Cards.Find(c => c["value"] == "8"));
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["value"] == "8"));
             couldBePlayed.ShouldEqual(true);
         };
 
         It should_be_able_to_play_Queen = () =>
         {
-            bool couldBePlayed = game.CheckCard(game.PreviousPlayer.Hand.Cards.Find(c => c["value"] == "Queen"));
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["value"] == "Queen"));
             couldBePlayed.ShouldEqual(true);
         };
 
         It should_not_be_able_to_play_any_other_card = () =>
         {
-            bool couldBePlayed = game.CheckCard(game.PreviousPlayer.Hand.Cards.Find(c => c["value"] != "Queen" && c["value"] != "8" && c["suit"] != Hearts));
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["value"] != "Queen" && c["value"] != "8" && c["suit"] != Hearts));
             couldBePlayed.ShouldEqual(false);
         };
+    }
 
-        It should_have_taken_1_card = () =>
+    [Subject("Next player")]
+    class when_nonfunction_card_is_played_and_he_did_not_play_any_card : when_game_is_established_and_started
+    {
+        Because of = () =>
+        {
+            cardsToTake = 1;
+            game.Start();
+            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            handSizeBeforeAction = game.NextPlayer.Hand.Size;
+
+            ChoosePlayAndEnd(c => c["value"] == "8" && c["suit"] == Hearts);
+            EndTurnWithoutPlayingCard();
+        };
+
+        It should_have_taken_1_card_from_deck = () =>
         {
             game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+        };
+        It should_have_1_more_card_in_hand = () =>
+        {
             game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
         };
     }
@@ -175,8 +191,6 @@ namespace Deckard.Examples.Specs
             game.Heros.Add(new Player() { Attributes = new Dictionary<string, int> { { "number", 3 } }, Hand = new Deck(shuffler) });
 
             game.DealFirstCards(5);
-
-            //game.DealCards(game.SourceDecks[0], new List<Deck>() { game.DestinationDeck }, 1);
         };
 
         public static Deck SetupDeck(IShuffler shuffler)
@@ -273,6 +287,18 @@ namespace Deckard.Examples.Specs
             }
 
             return deck;
+        }
+
+        public static void ChoosePlayAndEnd(Predicate<Card> cardPredicate)
+        {
+            game.CurrentPlayer.ChooseCardToPlay(cardPredicate);
+            game.CurrentPlayer.PlayCard(game.NextPlayer, game.DestinationDeck);
+            game.EndRound();
+        }
+
+        public static void EndTurnWithoutPlayingCard()
+        {
+            game.EndRound();
         }
 
         public static Game game;
