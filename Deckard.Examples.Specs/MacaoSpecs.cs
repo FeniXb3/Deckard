@@ -241,6 +241,89 @@ namespace Deckard.Examples.Specs
         };
     }
 
+    [Subject("Next player")]
+    class when_current_player_plays_4_of_any_suit_and_wants_to_play_a_card : when_game_is_established_and_started
+    {
+        Because of = () =>
+        {
+            cardValue = "4";
+            cardSuit = Clubs;
+
+            game.Start();
+            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            handSizeBeforeAction = game.NextPlayer.Hand.Size;
+
+            ChoosePlayAndEnd(c => c["value"] == cardValue && c["suit"] == cardSuit);
+        };
+
+        It should_be_able_to_play_card_of_the_same_value = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["value"] == cardValue));
+            couldBePlayed.ShouldEqual(true);
+        };
+
+        It should_not_be_able_to_play_card_of_the_same_suit_other_than_4 = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["suit"] == cardSuit));
+            couldBePlayed.ShouldEqual(false);
+        };
+
+        It should_not_be_able_to_play_Queen = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["value"] == "Queen"));
+            couldBePlayed.ShouldEqual(false);
+        };
+
+        static string cardValue;
+        static string cardSuit;
+    }
+
+
+    [Subject("Next player")]
+    class when_current_player_plays_4_of_any_suit_and_he_did_not_play_any_card : when_game_is_established_and_started
+    {
+        Because of = () =>
+        {
+            game.Start();
+            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            handSizeBeforeAction = game.NextPlayer.Hand.Size;
+
+            ChoosePlayAndEnd(c => c["value"] == "4" && c["suit"] == Clubs);
+            EndTurnWithoutPlayingCard();
+        };
+
+        It should_be_forced_to_wait_1_turn = () =>
+        {
+            game.PreviousPlayer[turnsToWait].ShouldEqual(1);
+        };
+
+        It should_have_the_same_amount_of_cards_in_hand = () =>
+        {
+            game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction);
+        };
+    }
+
+
+    [Subject("Third player")]
+    class when_first_player_plays_4_and_second_player_plays_4_and_he_did_not_play_any_card : when_game_is_established_and_started
+    {
+        Because of = () =>
+        {
+            game.Start();
+            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            handSizeBeforeAction = game.NextPlayer.Hand.Size;
+
+            ChoosePlayAndEnd(c => c["value"] == "4");
+            ChoosePlayAndEnd(c => c["value"] == "4");
+            EndTurnWithoutPlayingCard();
+        };
+
+        It should_be_forced_to_wait_2_turns = () =>
+        {
+            game.PreviousPlayer[turnsToWait].ShouldEqual(2);
+        };
+    }
+
     public class when_game_is_established_and_started : WithFakes
     {
         Establish context = () =>
@@ -248,11 +331,14 @@ namespace Deckard.Examples.Specs
             #if DEBUG
                 System.Threading.Thread.Sleep(10000);
             #endif
-
+            
             game = new Game();
             game.DefaultAction += (o, e) =>
             {
-                e.TargetPlayer.Draw(game.SourceDecks[0]);
+                if (e.TargetPlayer[turnsToWait] == 0)
+                    e.TargetPlayer.Draw(game.SourceDecks[0]);
+                else
+                    e.TargetPlayer[turnsToWait]--;
             };
             game.NextCardCriteria = (c => c["value"] == game.DestinationDeck.Top["value"] 
                 || c["suit"] == game.DestinationDeck.Top["suit"]
@@ -263,11 +349,35 @@ namespace Deckard.Examples.Specs
             game.SourceDecks.Add(SetupDeck(shuffler));
             game.DestinationDeck = new Deck(shuffler);
 
-            game.Heros.Add(new Player() { Attributes = new Dictionary<string, int> { { "number", 1 } }, Hand = new Deck(shuffler) });
-            game.Heros.Add(new Player() { Attributes = new Dictionary<string, int> { { "number", 2 } }, Hand = new Deck(shuffler) });
-            game.Heros.Add(new Player() { Attributes = new Dictionary<string, int> { { "number", 3 } }, Hand = new Deck(shuffler) });
+            game.Heros.Add(new Player() 
+            {
+                Attributes = new Dictionary<string, int>()
+                {
+                    { "number", 1 } ,
+                    { turnsToWait, 0 } 
+                },
+                Hand = new Deck(shuffler) 
+            });
+            game.Heros.Add(new Player() 
+            {
+                Attributes = new Dictionary<string, int>()
+                {
+                    { "number", 2 } ,
+                    { turnsToWait, 0 } 
+                },
+                Hand = new Deck(shuffler) 
+            });
+            game.Heros.Add(new Player() 
+            {
+                Attributes = new Dictionary<string, int> ()
+                {
+                    { "number", 3 } ,
+                    { turnsToWait, 0 } 
+                },
+                Hand = new Deck(shuffler) 
+            });
 
-            game.DealFirstCards(5);
+            game.DealFirstCards(6);
             game.DealCards(game.SourceDecks[0], new List<Deck> { game.DestinationDeck }, 1);
         };
 
@@ -297,6 +407,10 @@ namespace Deckard.Examples.Specs
             deck.Shuffle();
 
             deck.MoveToTop(c => c["value"] == "King" && c["suit"] == Clubs); // first card
+
+            deck.MoveToTop(c => c["value"] == "5" && c["suit"] == Hearts);       // 3
+            deck.MoveToTop(c => c["value"] == "4" && c["suit"] == Spades);   // 2
+            deck.MoveToTop(c => c["value"] == "4" && c["suit"] == Clubs);       // 1
 
             deck.MoveToTop(c => c["value"] == "5" && c["suit"] == Clubs);       // 3
             deck.MoveToTop(c => c["value"] == "King" && c["suit"] == Spades);   // 2
@@ -381,7 +495,6 @@ namespace Deckard.Examples.Specs
             cards = deck.Cards.FindAll(c => c["value"] == "Queen");
             foreach (var card in cards)
             {
-                int cardsToTake = 5;
                 card.Played += (o, e) =>
                 {
                     Game.PlayerActionEventHandler action = null;
@@ -396,6 +509,26 @@ namespace Deckard.Examples.Specs
                                                     || c["suit"] == game.DestinationDeck.Top["suit"]
                                                     || c["value"] != game.DestinationDeck.Top["value"]
                                                     || c["suit"] != game.DestinationDeck.Top["suit"]);
+                };
+            }
+
+            // setup 4s
+            cards = deck.Cards.FindAll(c => c["value"] == "4");
+            foreach (var card in cards)
+            {
+                card.Played += (o, e) =>
+                {
+                    Game.PlayerActionEventHandler action = null;
+                    action += (ao, ae) =>
+                    {
+                        ae.TargetPlayer[turnsToWait]++;
+
+                        game.CustomNextCardCriteria = null;
+                        game.CustomAction -= action;
+                    };
+                    game.CustomAction += action;
+
+                    game.CustomNextCardCriteria = (c => c["value"] == "4");
                 };
             }
 
@@ -430,5 +563,7 @@ namespace Deckard.Examples.Specs
         protected const string Diamonds = "Diamonds";
         protected const string Clubs = "Clubs";
         protected const string Spades = "Spades";
+
+        protected const string turnsToWait = "turnsToWait";
     }
 }
