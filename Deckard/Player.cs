@@ -43,12 +43,12 @@ namespace Deckard
             CardInHand = null;
         }
 
-        public void PlayCard(Player targetPlayer = null, Deck targetDeck = null)
+        public void PlayCard(Player targetPlayer = null, Deck targetDeck = null, CardActionEventArgs actionEventArgs = null)
         {
             if (targetPlayer == null)
                 targetPlayer = this;
 
-            CardActionEventArgs cae = new CardActionEventArgs(targetPlayer);
+            CardActionEventArgs cae = actionEventArgs ?? new CardActionEventArgs(targetPlayer);
             CardInHand.OnPlayed(this, cae);
 
             if (targetDeck != null)

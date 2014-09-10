@@ -324,12 +324,39 @@ namespace Deckard.Examples.Specs
         };
     }
 
+
+
+    [Subject("Next player")]
+    class when_current_player_plays_Ace_of_any_suit_and_he_wants_to_play_a_card : when_game_is_established_and_started
+    {
+        Because of = () =>
+        {
+            newSuit = "Spades";
+
+            AceCardActionEventArgs actionEventArgs = new AceCardActionEventArgs(newSuit);
+
+            game.Start();
+            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            handSizeBeforeAction = game.NextPlayer.Hand.Size;
+
+            ChoosePlayAndEnd(c => c["value"] == "Ace" && c["suit"] == Clubs, actionEventArgs);
+        };
+
+        It should_force_the_current_suit_to_chosen_one = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["suit"] == newSuit));
+            couldBePlayed.ShouldEqual(true);
+        };
+
+        static string newSuit;
+    }
+
     public class when_game_is_established_and_started : WithFakes
     {
         Establish context = () =>
         {
             #if DEBUG
-                System.Threading.Thread.Sleep(10000);
+                System.Threading.Thread.Sleep(1000);
             #endif
             
             game = new Game();
@@ -391,7 +418,7 @@ namespace Deckard.Examples.Specs
                 Hand = new Deck(shuffler) 
             });
 
-            game.DealFirstCards(6);
+            game.DealFirstCards(7);
             game.DealCards(game.SourceDecks[0], new List<Deck> { game.DestinationDeck }, 1);
         };
 
@@ -421,6 +448,11 @@ namespace Deckard.Examples.Specs
             deck.Shuffle();
 
             deck.MoveToTop(c => c["value"] == "King" && c["suit"] == Clubs); // first card
+
+
+            deck.MoveToTop(c => c["value"] == "6" && c["suit"] == Hearts);       // 3
+            deck.MoveToTop(c => c["value"] == "7" && c["suit"] == Spades);   // 2
+            deck.MoveToTop(c => c["value"] == "Ace" && c["suit"] == Clubs);       // 1
 
             deck.MoveToTop(c => c["value"] == "5" && c["suit"] == Hearts);       // 3
             deck.MoveToTop(c => c["value"] == "4" && c["suit"] == Spades);   // 2
@@ -550,10 +582,31 @@ namespace Deckard.Examples.Specs
                 };
             }
 
+
+            // setup Aces
+            cards = deck.Cards.FindAll(c => c["value"] == "Ace");
+            foreach (var card in cards)
+            {
+                card.Played += (o, e) =>
+                {
+                    Game.PlayerActionEventHandler action = null;
+                    action += (ao, ae) =>
+                    {
+                        game.CustomNextCardCriteria = null;
+                        game.CustomAction -= action;
+                    };
+                    game.CustomAction += action;
+                    game.IsCustomActionSet = true;
+
+                    game.CustomNextCardCriteria = (c => c["value"] == game.DestinationDeck.Top["value"]
+                || c["suit"] == ((AceCardActionEventArgs)e).ChosenSuit);
+                };
+            }
+
             return deck;
         }
 
-        public static void ChoosePlayAndEnd(Predicate<Card> cardPredicate)
+        public static void ChoosePlayAndEnd(Predicate<Card> cardPredicate, CardActionEventArgs actionEventArgs = null)
         {
             Card chosenCard = game.CurrentPlayer.ChooseCardToPlay(cardPredicate);
 
@@ -563,7 +616,7 @@ namespace Deckard.Examples.Specs
             if (!game.CheckCard(chosenCard))
                 throw new ArgumentException("The card cannot be played - it does not meet the requirements.");
 
-            game.CurrentPlayer.PlayCard(game.NextPlayer, game.DestinationDeck);
+            game.CurrentPlayer.PlayCard(game.NextPlayer, game.DestinationDeck, actionEventArgs);
             game.EndRound();
         }
 
@@ -583,5 +636,15 @@ namespace Deckard.Examples.Specs
         protected const string Spades = "Spades";
 
         protected const string turnsToWait = "turnsToWait";
+    }
+
+    public class AceCardActionEventArgs : CardActionEventArgs
+    {
+        public string ChosenSuit;
+
+        public AceCardActionEventArgs(string chosenSuit) : base(null)
+        {
+            ChosenSuit = chosenSuit;
+        }
     }
 }
