@@ -333,6 +333,20 @@ namespace Deckard.Examples.Specs
             #endif
             
             game = new Game();
+            game.RoundEndAction += (o, e) => 
+            {
+                if (game.CurrentPlayer.CardsPlayed == 0)
+                {
+                    if (!game.IsCustomActionSet)
+                    {
+                        game.OnDefaultActionTaken(game, new PlayerActionEventArgs(game.CurrentPlayer));
+                    }
+                    else
+                    {
+                        game.OnCustomActionTaken(game, new PlayerActionEventArgs(game.CurrentPlayer));
+                    }
+                }
+            };
             game.DefaultAction += (o, e) =>
             {
                 if (e.TargetPlayer[turnsToWait] == 0)
@@ -459,6 +473,7 @@ namespace Deckard.Examples.Specs
                         game.CustomAction -= action;
                     };
                     game.CustomAction += action;
+                    game.IsCustomActionSet = true;
 
                     game.CustomNextCardCriteria = (c => c["value"] == "2" || c["value"] == "3"
                         || (c["value"] == "King" && (c["suit"] == Hearts || c["suit"] == Spades)));
@@ -485,6 +500,7 @@ namespace Deckard.Examples.Specs
                         game.CustomAction -= action;
                     };
                     game.CustomAction += action;
+                    game.IsCustomActionSet = true;
 
                     game.CustomNextCardCriteria = (c => c["value"] == "2" || c["value"] == "3"
                         || (c["value"] == "King" && (c["suit"] == Hearts || c["suit"] == Spades)));
@@ -504,6 +520,7 @@ namespace Deckard.Examples.Specs
                         game.CustomAction -= action;
                     };
                     game.CustomAction += action;
+                    game.IsCustomActionSet = true;
 
                     game.CustomNextCardCriteria = (c => c["value"] == game.DestinationDeck.Top["value"]
                                                     || c["suit"] == game.DestinationDeck.Top["suit"]
@@ -527,6 +544,7 @@ namespace Deckard.Examples.Specs
                         game.CustomAction -= action;
                     };
                     game.CustomAction += action;
+                    game.IsCustomActionSet = true;
 
                     game.CustomNextCardCriteria = (c => c["value"] == "4");
                 };

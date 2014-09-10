@@ -40,14 +40,8 @@ namespace Deckard
 
         public void EndRound()
         {
-            if (CurrentPlayer.CardsPlayed == 0)
-            {
-                if(CustomAction == null)
-                    OnDefaultActionTaken(this, new PlayerActionEventArgs(CurrentPlayer));
-                else
-                    OnCustomActionTaken(this, new PlayerActionEventArgs(CurrentPlayer));
-            }
-
+            OnRoundEnded(this, new PlayerActionEventArgs(CurrentPlayer));
+            
             CurrentRound.Close();
             CurrentPlayerNumber = (CurrentPlayerNumber + 1) % Heros.Count;
             CurrentPlayer.CardsPlayed = 0;
@@ -113,6 +107,7 @@ namespace Deckard
         public delegate void PlayerActionEventHandler(object oSender, PlayerActionEventArgs oEventArgs);
         public event PlayerActionEventHandler CustomAction;
         public event PlayerActionEventHandler DefaultAction;
+        public event PlayerActionEventHandler RoundEndAction;
         
         public void OnCustomActionTaken(object sender, EventArgs eventArgs)
         {
@@ -120,6 +115,7 @@ namespace Deckard
             {
                 CustomAction(sender, eventArgs as PlayerActionEventArgs);
             }
+            IsCustomActionSet = false;
         }
 
 
@@ -128,6 +124,14 @@ namespace Deckard
             if (DefaultAction != null)
             {
                 DefaultAction(sender, eventArgs as PlayerActionEventArgs);
+            }
+        }
+
+        public void OnRoundEnded(object sender, EventArgs eventArgs)
+        {
+            if (RoundEndAction != null)
+            {
+                RoundEndAction(sender, eventArgs as PlayerActionEventArgs);
             }
         }
 
@@ -161,5 +165,7 @@ namespace Deckard
 
             return isValid;
         }
+
+        public bool IsCustomActionSet;
     }
 }
