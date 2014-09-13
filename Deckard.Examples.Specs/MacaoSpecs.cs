@@ -351,12 +351,39 @@ namespace Deckard.Examples.Specs
         static string newSuit;
     }
 
+
+    [Subject("Previous player")]
+    class when_current_player_plays_King_of_Spaes_and_he_did_not_play_any_card : when_game_is_established_and_started
+    {
+        Because of = () =>
+        {
+            cardsToTake = 5;
+            game.Start();
+            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+
+            EndTurnWithoutPlayingCard();
+            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            handSizeBeforeAction = game.PreviousPlayer.Hand.Size;
+            ChoosePlayAndEnd(c => c["value"] == "King" && c["suit"] == Spades);
+            EndTurnWithoutPlayingCard();
+        };
+
+        It should_have_taken_5_card_from_deck = () =>
+        {
+            game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+        };
+        It should_have_5_more_card_in_hand = () =>
+        {
+            game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
+        };
+    }
+
     public class when_game_is_established_and_started : WithFakes
     {
         Establish context = () =>
         {
             #if DEBUG
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(5000);
             #endif
             
             game = new Game();
@@ -534,6 +561,32 @@ namespace Deckard.Examples.Specs
                     game.CustomAction += action;
                     game.IsCustomActionSet = true;
 
+                    game.CustomNextCardCriteria = (c => c["value"] == "2" || c["value"] == "3"
+                        || (c["value"] == "King" && (c["suit"] == Hearts || c["suit"] == Spades)));
+                };
+            }
+            cards = deck.Cards.FindAll(c => c["value"] == "King" && c["suit"] == Spades);
+            foreach (var card in cards)
+            {
+                int cardsToTake = 5;
+                card.Played += (o, e) =>
+                {
+                    if (e.TargetPlayer == null)
+                        throw new System.ArgumentException("Target player cannot be null.");
+
+                    Game.PlayerActionEventHandler action = null;
+                    action += (ao, ae) =>
+                    {
+                        while (cardsToTake-- > 0)
+                            ae.TargetPlayer.Draw(game.SourceDecks[0]);
+
+                        game.CustomNextCardCriteria = null;
+                        game.CustomAction -= action;
+                    };
+                    game.CustomAction += action;
+                    game.IsCustomActionSet = true;
+                    game.ForceNextPlayerTo(game.PreviousPlayer);
+                    
                     game.CustomNextCardCriteria = (c => c["value"] == "2" || c["value"] == "3"
                         || (c["value"] == "King" && (c["suit"] == Hearts || c["suit"] == Spades)));
                 };

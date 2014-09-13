@@ -43,7 +43,16 @@ namespace Deckard
             OnRoundEnded(this, new PlayerActionEventArgs(CurrentPlayer));
             
             CurrentRound.Close();
-            CurrentPlayerNumber = (CurrentPlayerNumber + 1) % Heros.Count;
+
+            if (ForcedNextPlayer == null)
+            {
+                CurrentPlayerNumber = (CurrentPlayerNumber + 1) % Heros.Count;
+            }
+            else
+            {
+                CurrentPlayerNumber = Heros.IndexOf(ForcedNextPlayer);
+                ForcedNextPlayer = null;
+            }
             CurrentPlayer.CardsPlayed = 0;
             NextRound();
         }
@@ -100,9 +109,7 @@ namespace Deckard
             }
         }
 
-
         public int CurrentPlayerNumber { get; set; }
-
 
         public delegate void PlayerActionEventHandler(object oSender, PlayerActionEventArgs oEventArgs);
         public event PlayerActionEventHandler CustomAction;
@@ -167,5 +174,12 @@ namespace Deckard
         }
 
         public bool IsCustomActionSet;
+
+        public void ForceNextPlayerTo(Player player)
+        {
+            ForcedNextPlayer = player;
+        }
+
+        public Player ForcedNextPlayer { get; set; }
     }
 }
