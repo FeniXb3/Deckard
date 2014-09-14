@@ -9,12 +9,43 @@ namespace Deckard
     {
         public Deck SourceDeck;
         public List<Player> Players { get; set; }
+        protected int CurrentPlayerNumber { get; set; }
+        public bool IsCustomActionSet { get; set; }
+        protected Player ForcedNextPlayer { get; set; }
+        public Deck DestinationDeck { get; set; }
+        public Predicate<Card> NextCardCriteria { get; set; }
+        public Predicate<Card> CustomNextCardCriteria { get; set; }
+        public Player CurrentPlayer
+        {
+            get
+            {
+                return Players[CurrentPlayerNumber];
+            }
+        }
+        public Player NextPlayer
+        {
+            get
+            {
+                return Players[(CurrentPlayerNumber + 1) % Players.Count];
+            }
+        }
+        public Player PreviousPlayer
+        {
+            get
+            {
+                int prevNumber = CurrentPlayerNumber == 0 ? Players.Count - 1 : CurrentPlayerNumber - 1;
+                return Players[prevNumber];
+            }
+        }
+
+        public delegate void PlayerActionEventHandler(object oSender, PlayerActionEventArgs oEventArgs);
+        public event PlayerActionEventHandler CustomAction;
+        public event PlayerActionEventHandler DefaultAction;
+        public event PlayerActionEventHandler TurnEndAction;
 
         public Game()
         {
             Players = new List<Player>();
-            Rounds = new List<Round>();
-            CurrentRoundNumber = -1;
         }
 
         public void DealCards(Deck source, List<Deck> destinationDecks, int cardsCount = -1)
@@ -34,14 +65,10 @@ namespace Deckard
             }
         }
 
-
-        public int CurrentRoundNumber { get; set; }
-
-        public void EndRound()
+        public void EndTurn()
         {
-            OnRoundEnded(this, new PlayerActionEventArgs(CurrentPlayer));
+            OnTurnEnded(this, new PlayerActionEventArgs(CurrentPlayer));
             
-            CurrentRound.Close();
 
             if (ForcedNextPlayer == null)
             {
@@ -53,68 +80,13 @@ namespace Deckard
                 ForcedNextPlayer = null;
             }
             CurrentPlayer.CardsPlayed = 0;
-            NextRound();
-        }
-
-        private void NextRound()
-        {
-            AddRound(RoundState.Opened);
-        }
-
-        private void AddRound(RoundState roundState)
-        {
-            Rounds.Add(new Round() { State = roundState });
-            if (roundState == RoundState.Opened)
-                CurrentRoundNumber = Rounds.Count - 1;
-        }
-
-        public List<Round> Rounds { get; set; }
-
-        public Round CurrentRound 
-        {
-            get 
-            {
-                return Rounds.FirstOrDefault(r => r.State == RoundState.Opened);
-            }
         }
 
         public void Start()
         {
-            AddRound(RoundState.Opened);
+            CurrentPlayerNumber = 0;
         }
 
-        public Player CurrentPlayer
-        {
-            get
-            {
-                return Players[CurrentPlayerNumber];
-            }
-        }
-
-        public Player NextPlayer
-        {
-            get
-            {
-                return Players[(CurrentPlayerNumber + 1) % Players.Count];
-            }
-        }
-
-        public Player PreviousPlayer
-        {
-            get
-            {
-                int prevNumber = CurrentPlayerNumber == 0 ? Players.Count - 1 : CurrentPlayerNumber - 1;
-                return Players[prevNumber];
-            }
-        }
-
-        public int CurrentPlayerNumber { get; set; }
-
-        public delegate void PlayerActionEventHandler(object oSender, PlayerActionEventArgs oEventArgs);
-        public event PlayerActionEventHandler CustomAction;
-        public event PlayerActionEventHandler DefaultAction;
-        public event PlayerActionEventHandler RoundEndAction;
-        
         public void OnCustomActionTaken(object sender, EventArgs eventArgs)
         {
             if (CustomAction != null)
@@ -124,7 +96,6 @@ namespace Deckard
             IsCustomActionSet = false;
         }
 
-
         public void OnDefaultActionTaken(object sender, EventArgs eventArgs)
         {
             if (DefaultAction != null)
@@ -133,11 +104,11 @@ namespace Deckard
             }
         }
 
-        public void OnRoundEnded(object sender, EventArgs eventArgs)
+        public void OnTurnEnded(object sender, EventArgs eventArgs)
         {
-            if (RoundEndAction != null)
+            if (TurnEndAction != null)
             {
-                RoundEndAction(sender, eventArgs as PlayerActionEventArgs);
+                TurnEndAction(sender, eventArgs as PlayerActionEventArgs);
             }
         }
 
@@ -151,10 +122,6 @@ namespace Deckard
             DealCards(SourceDeck, allHands, cardsCount);
         
         }
-
-        public Deck DestinationDeck { get; set; }
-        public Predicate<Card> NextCardCriteria;
-        public Predicate<Card> CustomNextCardCriteria;
 
         public bool CheckCard(Card card)
         {
@@ -172,13 +139,10 @@ namespace Deckard
             return isValid;
         }
 
-        public bool IsCustomActionSet;
-
         public void ForceNextPlayerTo(Player player)
         {
             ForcedNextPlayer = player;
         }
 
-        public Player ForcedNextPlayer { get; set; }
     }
 }

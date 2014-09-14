@@ -7,6 +7,8 @@ namespace Deckard
 {
     public class Player
     {
+        public Deck Hand { get; set; }
+        public int CardsPlayed { get; set; }
         public Card CardInHand;
         public Dictionary<string, int> Attributes;
         /// <summary>
@@ -59,8 +61,6 @@ namespace Deckard
             CardsPlayed++;
         }
 
-        public Deck Hand { get; set; }
-
         /// <summary>
         /// Draw card from deck and put it in hand
         /// </summary>
@@ -81,8 +81,6 @@ namespace Deckard
 
             return CardInHand;
         }
-
-        public int CardsPlayed { get; set; }
 
         public override string ToString()
         {

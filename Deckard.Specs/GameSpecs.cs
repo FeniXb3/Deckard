@@ -213,27 +213,18 @@ namespace Deckard.Specs
         {
             game = new Game();
             game.Players.Add(new Player());
+            game.Players.Add(new Player());
             game.Start();
         };
 
         Because of = () => 
         {
-            game.EndRound();            
+            game.EndTurn();            
         };
 
-        It should_have_second_round_as_actual = () => 
+        It should_have_second_player_as_current = () => 
         {
-            game.CurrentRoundNumber.ShouldEqual(1);
-        };
-
-        It should_have_first_round_set_as_closed = () =>
-        {
-            game.Rounds[0].State.ShouldEqual(RoundState.Closed);
-        };
-
-        It should_have_current_round_set_as_opened = () =>
-        {
-            game.CurrentRound.State.ShouldEqual(RoundState.Opened);
+            game.CurrentPlayer.ShouldEqual(game.Players[1]);
         };
 
         static Game game;

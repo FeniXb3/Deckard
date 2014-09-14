@@ -454,7 +454,7 @@ namespace Deckard.Examples.Specs
             #endif
             
             game = new Game();
-            game.RoundEndAction += (o, e) => 
+            game.TurnEndAction += (o, e) => 
             {
                 if (game.CurrentPlayer.CardsPlayed == 0)
                 {
@@ -770,12 +770,12 @@ namespace Deckard.Examples.Specs
                     chosenCard.ToString(), game.DestinationDeck.Top));
 
             game.CurrentPlayer.PlayCard(game.NextPlayer, game.DestinationDeck, actionEventArgs);
-            game.EndRound();
+            game.EndTurn();
         }
 
         public static void EndTurnWithoutPlayingCard()
         {
-            game.EndRound();
+            game.EndTurn();
         }
         
         public static Game game;
