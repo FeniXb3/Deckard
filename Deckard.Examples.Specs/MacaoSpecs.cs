@@ -12,7 +12,7 @@ namespace Deckard.Examples.Specs
         {
             cardsToTake = 2;
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "2" && c["suit"] == Clubs);
@@ -21,7 +21,7 @@ namespace Deckard.Examples.Specs
 
         It should_have_taken_2_card_from_deck = () =>
         {
-            game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+            game.SourceDeck.Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
         };
         It should_have_2_more_card_in_hand = () =>
         {
@@ -36,7 +36,7 @@ namespace Deckard.Examples.Specs
         {
             cardsToTake = 3;
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "3" && c["suit"] == Clubs);
@@ -45,7 +45,7 @@ namespace Deckard.Examples.Specs
 
         It should_have_taken_3_card_from_deck = () =>
         {
-            game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+            game.SourceDeck.Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
         };
         It should_have_3_more_card_in_hand = () =>
         {
@@ -60,7 +60,7 @@ namespace Deckard.Examples.Specs
         {
             cardsToTake = 5;
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "King" && c["suit"] == Hearts);
@@ -69,7 +69,7 @@ namespace Deckard.Examples.Specs
 
         It should_have_taken_5_card_from_deck = () =>
         {
-            game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+            game.SourceDeck.Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
         };
         It should_have_5_more_card_in_hand = () =>
         {
@@ -84,7 +84,7 @@ namespace Deckard.Examples.Specs
         {
             cardsToTake = 5;
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "3" && c["suit"] == Clubs);  // 1
@@ -94,7 +94,7 @@ namespace Deckard.Examples.Specs
 
         It should_have_taken_5_card_from_deck = () =>
         {
-            game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+            game.SourceDeck.Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
         };
         It should_have_5_more_card_in_hand = () =>
         {
@@ -109,7 +109,7 @@ namespace Deckard.Examples.Specs
         {
             cardsToTake = 1;
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "8" && c["suit"] == Clubs);
@@ -147,7 +147,7 @@ namespace Deckard.Examples.Specs
         {
             cardsToTake = 1;
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "8" && c["suit"] == Clubs);
@@ -156,7 +156,7 @@ namespace Deckard.Examples.Specs
 
         It should_have_taken_1_card_from_deck = () =>
         {
-            game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+            game.SourceDeck.Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
         };
         It should_have_1_more_card_in_hand = () =>
         {
@@ -171,7 +171,7 @@ namespace Deckard.Examples.Specs
         {
             cardsToTake = 3;
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "3" && c["suit"] == Clubs);
@@ -210,7 +210,7 @@ namespace Deckard.Examples.Specs
         {
             cardsToTake = 3;
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "Queen" && c["suit"] == Hearts);
@@ -250,7 +250,7 @@ namespace Deckard.Examples.Specs
             cardSuit = Clubs;
 
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == cardValue && c["suit"] == cardSuit);
@@ -285,7 +285,7 @@ namespace Deckard.Examples.Specs
         Because of = () =>
         {
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "4" && c["suit"] == Clubs);
@@ -310,7 +310,7 @@ namespace Deckard.Examples.Specs
         Because of = () =>
         {
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "4");
@@ -336,7 +336,7 @@ namespace Deckard.Examples.Specs
             AceCardActionEventArgs actionEventArgs = new AceCardActionEventArgs(newSuit);
 
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "Ace" && c["suit"] == Clubs, actionEventArgs);
@@ -359,10 +359,10 @@ namespace Deckard.Examples.Specs
         {
             cardsToTake = 5;
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
 
             EndTurnWithoutPlayingCard();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.PreviousPlayer.Hand.Size;
             ChoosePlayAndEnd(c => c["value"] == "King" && c["suit"] == Spades);
             EndTurnWithoutPlayingCard();
@@ -370,7 +370,7 @@ namespace Deckard.Examples.Specs
 
         It should_have_taken_5_card_from_deck = () =>
         {
-            game.SourceDecks[0].Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
+            game.SourceDeck.Size.ShouldEqual(sourceSizeBeforeAction - cardsToTake);
         };
         It should_have_5_more_card_in_hand = () =>
         {
@@ -389,7 +389,7 @@ namespace Deckard.Examples.Specs
             JackCardActionEventArgs actionEventArgs = new JackCardActionEventArgs(newValue, game.CurrentPlayer);
 
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "Jack" && c["suit"] == Clubs, actionEventArgs);
@@ -421,7 +421,7 @@ namespace Deckard.Examples.Specs
             JackCardActionEventArgs actionEventArgs = new JackCardActionEventArgs(newValue, game.CurrentPlayer);
 
             game.Start();
-            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
             ChoosePlayAndEnd(c => c["value"] == "Jack" && c["suit"] == Clubs, actionEventArgs);
@@ -471,7 +471,7 @@ namespace Deckard.Examples.Specs
             game.DefaultAction += (o, e) =>
             {
                 if (e.TargetPlayer[turnsToWait] == 0)
-                    e.TargetPlayer.Draw(game.SourceDecks[0]);
+                    e.TargetPlayer.Draw(game.SourceDeck);
                 else
                     e.TargetPlayer[turnsToWait]--;
             };
@@ -481,10 +481,10 @@ namespace Deckard.Examples.Specs
 
 
             IShuffler shuffler = new RandomNumberSortShuffler();
-            game.SourceDecks.Add(SetupDeck(shuffler));
+            game.SourceDeck = SetupDeck(shuffler);
             game.DestinationDeck = new Deck(shuffler);
 
-            game.Heros.Add(new Player() 
+            game.Players.Add(new Player() 
             {
                 Attributes = new Dictionary<string, int>()
                 {
@@ -493,7 +493,7 @@ namespace Deckard.Examples.Specs
                 },
                 Hand = new Deck(shuffler) 
             });
-            game.Heros.Add(new Player() 
+            game.Players.Add(new Player() 
             {
                 Attributes = new Dictionary<string, int>()
                 {
@@ -502,7 +502,7 @@ namespace Deckard.Examples.Specs
                 },
                 Hand = new Deck(shuffler) 
             });
-            game.Heros.Add(new Player() 
+            game.Players.Add(new Player() 
             {
                 Attributes = new Dictionary<string, int> ()
                 {
@@ -513,7 +513,7 @@ namespace Deckard.Examples.Specs
             });
 
             game.DealFirstCards(9);
-            game.DealCards(game.SourceDecks[0], new List<Deck> { game.DestinationDeck }, 1);
+            game.DealCards(game.SourceDeck, new List<Deck> { game.DestinationDeck }, 1);
         };
 
         public static Deck SetupDeck(IShuffler shuffler)
@@ -601,7 +601,7 @@ namespace Deckard.Examples.Specs
                     action += (ao, ae) =>
                     {
                         while (cardsToTake-- > 0)
-                            ae.TargetPlayer.Draw(game.SourceDecks[0]);
+                            ae.TargetPlayer.Draw(game.SourceDeck);
 
                         game.CustomNextCardCriteria = null;
                         game.CustomAction -= action;
@@ -628,7 +628,7 @@ namespace Deckard.Examples.Specs
                     action += (ao, ae) =>
                     {
                         while (cardsToTake-- > 0)
-                            ae.TargetPlayer.Draw(game.SourceDecks[0]);
+                            ae.TargetPlayer.Draw(game.SourceDeck);
 
                         game.CustomNextCardCriteria = null;
                         game.CustomAction -= action;
@@ -653,7 +653,7 @@ namespace Deckard.Examples.Specs
                     action += (ao, ae) =>
                     {
                         while (cardsToTake-- > 0)
-                            ae.TargetPlayer.Draw(game.SourceDecks[0]);
+                            ae.TargetPlayer.Draw(game.SourceDeck);
 
                         game.CustomNextCardCriteria = null;
                         game.CustomAction -= action;
@@ -740,7 +740,7 @@ namespace Deckard.Examples.Specs
                     Game.PlayerActionEventHandler action = null;
                     action += (ao, ae) =>
                     {
-                        game.CurrentPlayer.Draw(game.SourceDecks[0], 1);
+                        game.CurrentPlayer.Draw(game.SourceDeck, 1);
 
                         if (game.NextPlayer == e.TargetPlayer)
                         {

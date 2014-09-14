@@ -53,43 +53,43 @@ namespace Deckard.Specs
             dest2Size = dest2.Size;
             cardsToDrawFromSource1Count = 2;
 
-            game.SourceDecks.Add(source1);
+            game.SourceDeck = source1;
 
             hero1 = new Player();
             hero1.Hand = dest1;
             hero2 = new Player();
             hero2.Hand = dest2;
 
-            game.Heros.Add(hero1);
-            game.Heros.Add(hero2);
+            game.Players.Add(hero1);
+            game.Players.Add(hero2);
         };
 
         Because of = () =>
         {
-            game.DealCards(game.SourceDecks[0], new List<Deck> { game.Heros[0].Hand, game.Heros[1].Hand }, cardsToDrawFromSource1Count);
+            game.DealCards(game.SourceDeck, new List<Deck> { game.Players[0].Hand, game.Players[1].Hand }, cardsToDrawFromSource1Count);
         };
 
         It should_have_less_cards_in_source_decks = () =>
         {
-            game.SourceDecks[0].Size.ShouldEqual(source1Size - cardsToDrawFromSource1Count * 2);
+            game.SourceDeck.Size.ShouldEqual(source1Size - cardsToDrawFromSource1Count * 2);
         };
 
         It should_have_more_cards_in_destination_decs = () =>
         {
-            game.Heros[0].Hand.Size.ShouldEqual(dest1Size + cardsToDrawFromSource1Count);
-            game.Heros[1].Hand.Size.ShouldEqual(dest2Size + cardsToDrawFromSource1Count);
+            game.Players[0].Hand.Size.ShouldEqual(dest1Size + cardsToDrawFromSource1Count);
+            game.Players[1].Hand.Size.ShouldEqual(dest2Size + cardsToDrawFromSource1Count);
         };
         
         It should_have_source_decks_without_dealt_cards = () =>
         {
-            game.SourceDecks[0].Cards.ShouldNotContain(cardsToDest1);
-            game.SourceDecks[0].Cards.ShouldNotContain(cardsToDest2);
+            game.SourceDeck.Cards.ShouldNotContain(cardsToDest1);
+            game.SourceDeck.Cards.ShouldNotContain(cardsToDest2);
         };
 
         It should_have_destination_decks_with_dealt_cards = () =>
         {
-            game.Heros[0].Hand.Cards.ShouldContain(cardsToDest1);
-            game.Heros[1].Hand.Cards.ShouldContain(cardsToDest2);
+            game.Players[0].Hand.Cards.ShouldContain(cardsToDest1);
+            game.Players[1].Hand.Cards.ShouldContain(cardsToDest2);
         };
 
         static Deck source1;
@@ -119,25 +119,25 @@ namespace Deckard.Specs
             dest1 = new Deck(shuffler);
             dest2 = new Deck(shuffler);
 
-            game.SourceDecks.Add(source1);
+            game.SourceDeck = source1;
 
             hero1 = new Player();
             hero1.Hand = dest1;
             hero2 = new Player();
             hero2.Hand = dest2;
 
-            game.Heros.Add(hero1);
-            game.Heros.Add(hero2);
+            game.Players.Add(hero1);
+            game.Players.Add(hero2);
         };
 
         Because of = () =>
         {
-            game.DealCards(source1, new List<Deck> { game.Heros[0].Hand, game.Heros[1].Hand }, 1);
+            game.DealCards(source1, new List<Deck> { game.Players[0].Hand, game.Players[1].Hand }, 1);
         };
 
         It should_have_destination_deck_with_fewer_cards = () =>
         {
-            game.Heros[1].Hand.Size.ShouldBeLessThan(game.Heros[0].Hand.Size);
+            game.Players[1].Hand.Size.ShouldBeLessThan(game.Players[0].Hand.Size);
         };
 
         static Deck source1;
@@ -173,30 +173,30 @@ namespace Deckard.Specs
 
             sourceSize = source1.Size;
 
-            game.SourceDecks.Add(source1);
+            game.SourceDeck = source1;
 
             hero1 = new Player();
             hero1.Hand = dest1;
             hero2 = new Player();
             hero2.Hand = dest2;
 
-            game.Heros.Add(hero1);
-            game.Heros.Add(hero2);
+            game.Players.Add(hero1);
+            game.Players.Add(hero2);
         };
 
         Because of = () =>
         {
-            game.DealCards(game.SourceDecks[0], new List<Deck> { game.Heros[0].Hand, game.Heros[1].Hand });
+            game.DealCards(game.SourceDeck, new List<Deck> { game.Players[0].Hand, game.Players[1].Hand });
         };
 
         It should_have_no_cards_in_source_deck = () =>
         {
-            game.SourceDecks[0].Size.ShouldEqual(0);
+            game.SourceDeck.Size.ShouldEqual(0);
         };
 
         It should_have_all_cards_from_source_in_destination_decks = () =>
         {
-            sourceSize.ShouldEqual(game.Heros[0].Hand.Size + game.Heros[1].Hand.Size);
+            sourceSize.ShouldEqual(game.Players[0].Hand.Size + game.Players[1].Hand.Size);
         };
 
         static Deck source1;
@@ -212,7 +212,7 @@ namespace Deckard.Specs
         Establish context = () => 
         {
             game = new Game();
-            game.Heros.Add(new Player());
+            game.Players.Add(new Player());
             game.Start();
         };
 

@@ -7,13 +7,12 @@ namespace Deckard
 {
     public class Game
     {
-        public List<Deck> SourceDecks;
-        public List<Player> Heros { get; set; }
+        public Deck SourceDeck;
+        public List<Player> Players { get; set; }
 
         public Game()
         {
-            SourceDecks = new List<Deck>();
-            Heros = new List<Player>();
+            Players = new List<Player>();
             Rounds = new List<Round>();
             CurrentRoundNumber = -1;
         }
@@ -46,11 +45,11 @@ namespace Deckard
 
             if (ForcedNextPlayer == null)
             {
-                CurrentPlayerNumber = (CurrentPlayerNumber + 1) % Heros.Count;
+                CurrentPlayerNumber = (CurrentPlayerNumber + 1) % Players.Count;
             }
             else
             {
-                CurrentPlayerNumber = Heros.IndexOf(ForcedNextPlayer);
+                CurrentPlayerNumber = Players.IndexOf(ForcedNextPlayer);
                 ForcedNextPlayer = null;
             }
             CurrentPlayer.CardsPlayed = 0;
@@ -88,7 +87,7 @@ namespace Deckard
         {
             get
             {
-                return Heros[CurrentPlayerNumber];
+                return Players[CurrentPlayerNumber];
             }
         }
 
@@ -96,7 +95,7 @@ namespace Deckard
         {
             get
             {
-                return Heros[(CurrentPlayerNumber + 1) % Heros.Count];
+                return Players[(CurrentPlayerNumber + 1) % Players.Count];
             }
         }
 
@@ -104,8 +103,8 @@ namespace Deckard
         {
             get
             {
-                int prevNumber = CurrentPlayerNumber == 0 ? Heros.Count - 1 : CurrentPlayerNumber - 1;
-                return Heros[prevNumber];
+                int prevNumber = CurrentPlayerNumber == 0 ? Players.Count - 1 : CurrentPlayerNumber - 1;
+                return Players[prevNumber];
             }
         }
 
@@ -146,10 +145,10 @@ namespace Deckard
         {
             List<Deck> allHands = new List<Deck>();
 
-            foreach (var player in Heros)
+            foreach (var player in Players)
                 allHands.Add(player.Hand);
 
-            DealCards(SourceDecks[0], allHands, cardsCount);
+            DealCards(SourceDeck, allHands, cardsCount);
         
         }
 
