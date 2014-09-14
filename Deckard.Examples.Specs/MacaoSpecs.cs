@@ -378,6 +378,73 @@ namespace Deckard.Examples.Specs
         };
     }
 
+
+    [Subject("Next player")]
+    class when_current_player_plays_Jack_of_any_suit_and_he_wants_to_play_a_card : when_game_is_established_and_started
+    {
+        Because of = () =>
+        {
+            newValue = "7";
+
+            JackCardActionEventArgs actionEventArgs = new JackCardActionEventArgs(newValue, game.CurrentPlayer);
+
+            game.Start();
+            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            handSizeBeforeAction = game.NextPlayer.Hand.Size;
+
+            ChoosePlayAndEnd(c => c["value"] == "Jack" && c["suit"] == Clubs, actionEventArgs);
+        };
+
+        It should_force_the_current_value_to_chosen_one = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["value"] == newValue));
+            couldBePlayed.ShouldEqual(true);
+        };
+
+        It should_not_be_able_to_play_card_of_the_same_value = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["value"] == "Jack"));
+            couldBePlayed.ShouldEqual(false);
+        };
+
+        static string newValue;
+    }
+
+    [Subject("Each player")]
+    class when_current_player_plays_Jack_of_any_suit : when_game_is_established_and_started
+    {
+        Because of = () =>
+        {
+            newValue = "7";
+            cardsToTake = 1;
+
+            JackCardActionEventArgs actionEventArgs = new JackCardActionEventArgs(newValue, game.CurrentPlayer);
+
+            game.Start();
+            sourceSizeBeforeAction = game.SourceDecks[0].Size;
+            handSizeBeforeAction = game.NextPlayer.Hand.Size;
+
+            ChoosePlayAndEnd(c => c["value"] == "Jack" && c["suit"] == Clubs, actionEventArgs);
+            ChoosePlayAndEnd(c => c["value"] == "7");
+
+            handSizeBeforeAction = game.CurrentPlayer.Hand.Size;
+            EndTurnWithoutPlayingCard();
+        };
+
+        It should_be_forced_to_put_card_with_the_chosen_value = () =>
+        {
+            bool couldBePlayed = game.CheckCard(game.CurrentPlayer.Hand.Cards.Find(c => c["value"] == newValue));
+            couldBePlayed.ShouldEqual(true);
+        };
+
+        It should_be_forced_to_draw_1_card_if_he_did_not_play_a_card = () =>
+        {
+            game.PreviousPlayer.Hand.Size.ShouldEqual(handSizeBeforeAction + cardsToTake);
+        };
+
+        static string newValue;
+    }
+
     public class when_game_is_established_and_started : WithFakes
     {
         Establish context = () =>
@@ -445,7 +512,7 @@ namespace Deckard.Examples.Specs
                 Hand = new Deck(shuffler) 
             });
 
-            game.DealFirstCards(7);
+            game.DealFirstCards(9);
             game.DealCards(game.SourceDecks[0], new List<Deck> { game.DestinationDeck }, 1);
         };
 
@@ -477,9 +544,17 @@ namespace Deckard.Examples.Specs
             deck.MoveToTop(c => c["value"] == "King" && c["suit"] == Clubs); // first card
 
 
-            deck.MoveToTop(c => c["value"] == "6" && c["suit"] == Hearts);       // 3
-            deck.MoveToTop(c => c["value"] == "7" && c["suit"] == Spades);   // 2
+            deck.MoveToTop(c => c["value"] == "9" && c["suit"] == Hearts);       // 3
+            deck.MoveToTop(c => c["value"] == "9" && c["suit"] == Spades);   // 2
             deck.MoveToTop(c => c["value"] == "Ace" && c["suit"] == Clubs);       // 1
+            
+            deck.MoveToTop(c => c["value"] == "Jack" && c["suit"] == Diamonds);    // 3
+            deck.MoveToTop(c => c["value"] == "Jack" && c["suit"] == Hearts);       // 2
+            deck.MoveToTop(c => c["value"] == "Jack" && c["suit"] == Clubs);      // 1
+
+            deck.MoveToTop(c => c["value"] == "7" && c["suit"] == Hearts);       // 3
+            deck.MoveToTop(c => c["value"] == "7" && c["suit"] == Spades);   // 2
+            deck.MoveToTop(c => c["value"] == "7" && c["suit"] == Clubs);       // 1
 
             deck.MoveToTop(c => c["value"] == "5" && c["suit"] == Hearts);       // 3
             deck.MoveToTop(c => c["value"] == "4" && c["suit"] == Spades);   // 2
@@ -490,7 +565,7 @@ namespace Deckard.Examples.Specs
             deck.MoveToTop(c => c["value"] == "2" && c["suit"] == Clubs);       // 1
 
             deck.MoveToTop(c => c["value"] == "10" && c["suit"] == Diamonds);   // 3
-            deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Clubs);   // 2
+            deck.MoveToTop(c => c["value"] == "10" && c["suit"] == Hearts);     // 2
             deck.MoveToTop(c => c["value"] == "3" && c["suit"] == Clubs);    // 1
             
             deck.MoveToTop(c => c["value"] == "3" && c["suit"] == Spades);      // 3
@@ -498,11 +573,11 @@ namespace Deckard.Examples.Specs
             deck.MoveToTop(c => c["value"] == "King" && c["suit"] == Hearts);   // 1
 
             deck.MoveToTop(c => c["value"] == "8" && c["suit"] == Diamonds);    // 3
-            deck.MoveToTop(c => c["value"] == "10" && c["suit"] == Hearts);     // 2
+            deck.MoveToTop(c => c["value"] == "8" && c["suit"] == Hearts);       // 2
             deck.MoveToTop(c => c["value"] == "8" && c["suit"] == Clubs);      // 1
 
             deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Diamonds);    // 3
-            deck.MoveToTop(c => c["value"] == "8" && c["suit"] == Hearts);       // 2
+            deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Clubs);   // 2
             deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Hearts);      // 1
 
             return deck;
@@ -652,7 +727,31 @@ namespace Deckard.Examples.Specs
                     game.IsCustomActionSet = true;
 
                     game.CustomNextCardCriteria = (c => c["value"] == game.DestinationDeck.Top["value"]
-                || c["suit"] == ((AceCardActionEventArgs)e).ChosenSuit);
+                        || c["suit"] == ((AceCardActionEventArgs)e).ChosenSuit);
+                };
+            }
+
+            // setup Jacks
+            cards = deck.Cards.FindAll(c => c["value"] == "Jack");
+            foreach (var card in cards)
+            {
+                card.Played += (o, e) =>
+                {
+                    Game.PlayerActionEventHandler action = null;
+                    action += (ao, ae) =>
+                    {
+                        game.CurrentPlayer.Draw(game.SourceDecks[0], 1);
+
+                        if (game.NextPlayer == e.TargetPlayer)
+                        {
+                            game.CustomNextCardCriteria = null;
+                            game.CustomAction -= action;
+                        }
+                    };
+                    game.CustomAction += action;
+                    game.IsCustomActionSet = true;
+
+                    game.CustomNextCardCriteria = (c => c["value"] == ((JackCardActionEventArgs)e).ChosenValue);
                 };
             }
 
@@ -667,7 +766,8 @@ namespace Deckard.Examples.Specs
                 throw new ArgumentException("The player does not such card and cannot play it.");
 
             if (!game.CheckCard(chosenCard))
-                throw new ArgumentException("The card cannot be played - it does not meet the requirements.");
+                throw new ArgumentException(string.Format("The card cannot be played - it does not meet the requirements. \n\rCard to be played:{0} \n\rCard on top:{1}",
+                    chosenCard.ToString(), game.DestinationDeck.Top));
 
             game.CurrentPlayer.PlayCard(game.NextPlayer, game.DestinationDeck, actionEventArgs);
             game.EndRound();
@@ -677,7 +777,7 @@ namespace Deckard.Examples.Specs
         {
             game.EndRound();
         }
-
+        
         public static Game game;
         public static int sourceSizeBeforeAction;
         public static int handSizeBeforeAction;
@@ -698,6 +798,17 @@ namespace Deckard.Examples.Specs
         public AceCardActionEventArgs(string chosenSuit) : base(null)
         {
             ChosenSuit = chosenSuit;
+        }
+    }
+
+    public class JackCardActionEventArgs : CardActionEventArgs
+    {
+        public string ChosenValue;
+
+        public JackCardActionEventArgs(string chosenValue, Player targetPlayer)
+            : base(targetPlayer)
+        {
+            ChosenValue = chosenValue;
         }
     }
 }
