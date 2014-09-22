@@ -1,0 +1,14 @@
+<Window x:Class="Deckard.Examples.WheresYaDeckArrr.Views.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        Title="{Binding WindowTitle}">
+
+    <Grid Background="White">
+        <TextBlock Text="Hello Caliburn Micro!"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   FontSize="20" />
+    </Grid>
+
+</Window>
