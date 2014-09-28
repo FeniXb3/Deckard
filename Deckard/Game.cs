@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -8,8 +9,8 @@ namespace Deckard
     public class Game
     {
         public Deck SourceDeck;
-        public List<Player> Players { get; set; }
-        protected int CurrentPlayerNumber { get; set; }
+        public ObservableCollection<Player> Players { get; set; }
+        public int CurrentPlayerNumber { get; set; }
         public bool IsCustomActionSet { get; set; }
         protected Player ForcedNextPlayer { get; set; }
         public Deck DestinationDeck { get; set; }
@@ -42,15 +43,16 @@ namespace Deckard
         public event PlayerActionEventHandler CustomAction;
         public event PlayerActionEventHandler DefaultAction;
         public event PlayerActionEventHandler TurnEndAction;
+        public event EventHandler Starting;
 
         public Game()
         {
-            Players = new List<Player>();
+            Players = new ObservableCollection<Player>();
         }
 
-        public void DealCards(Deck source, List<Deck> destinationDecks, int cardsCount = -1)
+        public void DealCards(Deck source, List<Deck> destinationDecks, int? cardsCount = null)
         {
-            if (cardsCount == -1)
+            if (!cardsCount.HasValue)
                 cardsCount = source.Size;
 
             while (cardsCount-- > 0)
@@ -84,7 +86,7 @@ namespace Deckard
 
         public void Start()
         {
-            CurrentPlayerNumber = 0;
+            OnStarting(this, EventArgs.Empty);
         }
 
         public void OnCustomActionTaken(object sender, EventArgs eventArgs)
@@ -142,6 +144,14 @@ namespace Deckard
         public void ForceNextPlayerTo(Player player)
         {
             ForcedNextPlayer = player;
+        }
+
+        public void OnStarting(object sender, EventArgs eventArgs)
+        {
+            if (Starting != null)
+            {
+                Starting(sender, eventArgs);
+            }
         }
 
     }

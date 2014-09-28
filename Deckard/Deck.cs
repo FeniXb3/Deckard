@@ -139,15 +139,13 @@ namespace Deckard
         /// Remove the card from a deck
         /// </summary>
         /// <param name="cardIndex">Optional index of a card to take and remove.</param>
-        /// <returns>A card at given index, or top card if the index was not provided or equals -1.</returns>
-        public Card TakeAndRemoveCard(int cardIndex = -1)
+        /// <returns>A card at given index, or top card if the index was not provided.</returns>
+        public Card TakeAndRemoveCard(int? cardIndex = null)
         {
-            Card toRemove = (cardIndex < 0) ? Top : this[cardIndex];
-
-            Card cardToTake = toRemove.DeepCopy();
+            Card toRemove = (!cardIndex.HasValue) ? Top : this[cardIndex.Value];
             Cards.Remove(toRemove);
 
-            return cardToTake;
+            return toRemove;
         }
 
         public void MoveToTop(Predicate<Card> match)

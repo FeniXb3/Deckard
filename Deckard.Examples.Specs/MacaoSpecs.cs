@@ -10,8 +10,9 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
-            cardsToTake = 2;
             game.Start();
+
+            cardsToTake = 2;
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -34,8 +35,9 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
-            cardsToTake = 3;
             game.Start();
+
+            cardsToTake = 3;
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -58,8 +60,9 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
-            cardsToTake = 5;
             game.Start();
+
+            cardsToTake = 5;
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -82,8 +85,8 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
-            cardsToTake = 5;
             game.Start();
+            cardsToTake = 5;
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -107,8 +110,9 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
-            cardsToTake = 1;
             game.Start();
+
+            cardsToTake = 1;
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -145,8 +149,9 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
-            cardsToTake = 1;
             game.Start();
+
+            cardsToTake = 1;
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -169,8 +174,9 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
-            cardsToTake = 3;
             game.Start();
+
+            cardsToTake = 3;
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -208,8 +214,9 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
-            cardsToTake = 3;
             game.Start();
+
+            cardsToTake = 3;
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -246,10 +253,11 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
+            game.Start();
+
             cardValue = "4";
             cardSuit = Clubs;
 
-            game.Start();
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -285,6 +293,7 @@ namespace Deckard.Examples.Specs
         Because of = () =>
         {
             game.Start();
+
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -331,11 +340,11 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
-            newSuit = "Spades";
+            game.Start();
 
+            newSuit = "Spades";
             AceCardActionEventArgs actionEventArgs = new AceCardActionEventArgs(newSuit);
 
-            game.Start();
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -357,8 +366,9 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
-            cardsToTake = 5;
             game.Start();
+
+            cardsToTake = 5;
             sourceSizeBeforeAction = game.SourceDeck.Size;
 
             EndTurnWithoutPlayingCard();
@@ -384,11 +394,11 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
-            newValue = "7";
+            game.Start();
 
+            newValue = "7";
             JackCardActionEventArgs actionEventArgs = new JackCardActionEventArgs(newValue, game.CurrentPlayer);
 
-            game.Start();
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -415,12 +425,13 @@ namespace Deckard.Examples.Specs
     {
         Because of = () =>
         {
+            game.Start();
+
             newValue = "7";
             cardsToTake = 1;
 
             JackCardActionEventArgs actionEventArgs = new JackCardActionEventArgs(newValue, game.CurrentPlayer);
 
-            game.Start();
             sourceSizeBeforeAction = game.SourceDeck.Size;
             handSizeBeforeAction = game.NextPlayer.Hand.Size;
 
@@ -449,71 +460,77 @@ namespace Deckard.Examples.Specs
     {
         Establish context = () =>
         {
-            #if DEBUG
-                System.Threading.Thread.Sleep(5000);
-            #endif
-            
+#if DEBUG
+            System.Threading.Thread.Sleep(5000);
+#endif
+
             game = new Game();
-            game.TurnEndAction += (o, e) => 
+            game.Starting += (go, ge) =>
             {
-                if (game.CurrentPlayer.CardsPlayed == 0)
+                Game curentGame = go as Game;
+                curentGame.CurrentPlayerNumber = 0;
+                curentGame.TurnEndAction += (o, e) =>
                 {
-                    if (!game.IsCustomActionSet)
+                    if (curentGame.CurrentPlayer.CardsPlayed == 0)
                     {
-                        game.OnDefaultActionTaken(game, new PlayerActionEventArgs(game.CurrentPlayer));
+                        if (!curentGame.IsCustomActionSet)
+                        {
+                            curentGame.OnDefaultActionTaken(game, new PlayerActionEventArgs(curentGame.CurrentPlayer));
+                        }
+                        else
+                        {
+                            curentGame.OnCustomActionTaken(game, new PlayerActionEventArgs(curentGame.CurrentPlayer));
+                        }
                     }
+                };
+                curentGame.DefaultAction += (o, e) =>
+                {
+                    int waitsOfPlayer = (int)e.TargetPlayer[turnsToWait];
+                    if (waitsOfPlayer == 0)
+                        e.TargetPlayer.Draw(curentGame.SourceDeck);
                     else
-                    {
-                        game.OnCustomActionTaken(game, new PlayerActionEventArgs(game.CurrentPlayer));
-                    }
-                }
-            };
-            game.DefaultAction += (o, e) =>
-            {
-                if (e.TargetPlayer[turnsToWait] == 0)
-                    e.TargetPlayer.Draw(game.SourceDeck);
-                else
-                    e.TargetPlayer[turnsToWait]--;
-            };
-            game.NextCardCriteria = (c => c["value"] == game.DestinationDeck.Top["value"] 
-                || c["suit"] == game.DestinationDeck.Top["suit"]
-                || c["value"] == "Queen");
+                        e.TargetPlayer[turnsToWait] = waitsOfPlayer - 1;
+                };
+                curentGame.NextCardCriteria = (c => c["value"] == curentGame.DestinationDeck.Top["value"]
+                    || c["suit"] == curentGame.DestinationDeck.Top["suit"]
+                    || c["value"] == "Queen");
 
 
-            IShuffler shuffler = new RandomNumberSortShuffler();
-            game.SourceDeck = SetupDeck(shuffler);
-            game.DestinationDeck = new Deck(shuffler);
+                IShuffler shuffler = new RandomNumberSortShuffler();
+                curentGame.SourceDeck = SetupDeck(shuffler);
+                curentGame.DestinationDeck = new Deck(shuffler);
 
-            game.Players.Add(new Player() 
-            {
-                Attributes = new Dictionary<string, int>()
+                curentGame.Players.Add(new Player()
+                {
+                    Attributes = new Dictionary<string, object>()
                 {
                     { "number", 1 } ,
                     { turnsToWait, 0 } 
                 },
-                Hand = new Deck(shuffler) 
-            });
-            game.Players.Add(new Player() 
-            {
-                Attributes = new Dictionary<string, int>()
+                    Hand = new Deck(shuffler)
+                });
+                curentGame.Players.Add(new Player()
+                {
+                    Attributes = new Dictionary<string, object>()
                 {
                     { "number", 2 } ,
                     { turnsToWait, 0 } 
                 },
-                Hand = new Deck(shuffler) 
-            });
-            game.Players.Add(new Player() 
-            {
-                Attributes = new Dictionary<string, int> ()
+                    Hand = new Deck(shuffler)
+                });
+                curentGame.Players.Add(new Player()
+                {
+                    Attributes = new Dictionary<string, object>()
                 {
                     { "number", 3 } ,
                     { turnsToWait, 0 } 
                 },
-                Hand = new Deck(shuffler) 
-            });
+                    Hand = new Deck(shuffler)
+                });
 
-            game.DealFirstCards(9);
-            game.DealCards(game.SourceDeck, new List<Deck> { game.DestinationDeck }, 1);
+                curentGame.DealFirstCards(9);
+                curentGame.DealCards(curentGame.SourceDeck, new List<Deck> { curentGame.DestinationDeck }, 1);
+            };
         };
 
         public static Deck SetupDeck(IShuffler shuffler)
@@ -541,13 +558,20 @@ namespace Deckard.Examples.Specs
 
             deck.Shuffle();
 
-            deck.MoveToTop(c => c["value"] == "King" && c["suit"] == Clubs); // first card
 
+            PrepareDeckForTests(deck);
+
+            return deck;
+        }
+
+        private static void PrepareDeckForTests(Deck deck)
+        {
+            deck.MoveToTop(c => c["value"] == "King" && c["suit"] == Clubs); // first card
 
             deck.MoveToTop(c => c["value"] == "9" && c["suit"] == Hearts);       // 3
             deck.MoveToTop(c => c["value"] == "9" && c["suit"] == Spades);   // 2
             deck.MoveToTop(c => c["value"] == "Ace" && c["suit"] == Clubs);       // 1
-            
+
             deck.MoveToTop(c => c["value"] == "Jack" && c["suit"] == Diamonds);    // 3
             deck.MoveToTop(c => c["value"] == "Jack" && c["suit"] == Hearts);       // 2
             deck.MoveToTop(c => c["value"] == "Jack" && c["suit"] == Clubs);      // 1
@@ -567,7 +591,7 @@ namespace Deckard.Examples.Specs
             deck.MoveToTop(c => c["value"] == "10" && c["suit"] == Diamonds);   // 3
             deck.MoveToTop(c => c["value"] == "10" && c["suit"] == Hearts);     // 2
             deck.MoveToTop(c => c["value"] == "3" && c["suit"] == Clubs);    // 1
-            
+
             deck.MoveToTop(c => c["value"] == "3" && c["suit"] == Spades);      // 3
             deck.MoveToTop(c => c["value"] == "2" && c["suit"] == Spades);      // 2
             deck.MoveToTop(c => c["value"] == "King" && c["suit"] == Hearts);   // 1
@@ -579,8 +603,6 @@ namespace Deckard.Examples.Specs
             deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Diamonds);    // 3
             deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Clubs);   // 2
             deck.MoveToTop(c => c["value"] == "Queen" && c["suit"] == Hearts);      // 1
-
-            return deck;
         }
 
         public static Deck SetupFunctionalCards(Deck deck) 
@@ -698,7 +720,9 @@ namespace Deckard.Examples.Specs
                     Game.PlayerActionEventHandler action = null;
                     action += (ao, ae) =>
                     {
-                        ae.TargetPlayer[turnsToWait]++;
+
+                        int waitsOfPlayer = (int)e.TargetPlayer[turnsToWait];
+                        ae.TargetPlayer[turnsToWait] = waitsOfPlayer + 1 ;
 
                         game.CustomNextCardCriteria = null;
                         game.CustomAction -= action;

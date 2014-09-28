@@ -93,16 +93,16 @@ namespace Deckard.Specs
             lifesAttributeName = "lifes";
             player = new Player();
             player[lifesAttributeName] = 5;
-            oneLifeLess = player[lifesAttributeName] - 1;
+            oneLifeLess = (int)player[lifesAttributeName] - 1;
 
             enemy = new Player();
             enemy[lifesAttributeName] = 1;
-            oneLifeMore = enemy[lifesAttributeName] + 1;
+            oneLifeMore = (int)enemy[lifesAttributeName] + 1;
             enemy.CardInHand = new Card();
             enemy.CardInHand.Played += (o, e) => 
             {
                 if (e.TargetPlayer != null)
-                    e.TargetPlayer[lifesAttributeName]--;
+                    e.TargetPlayer[lifesAttributeName] = (int)e.TargetPlayer[lifesAttributeName] - 1;
             };
         };
 
@@ -131,11 +131,11 @@ namespace Deckard.Specs
 
             player = new Player();
             player[lifesAttributeName] = 1;
-            oneLifeMore = player[lifesAttributeName] + 1;
+            oneLifeMore = (int)player[lifesAttributeName] + 1;
             player.CardInHand = new Card();
             player.CardInHand.Played += (o, e) =>
             {
-                (o as Player)[lifesAttributeName]++;
+                (o as Player)[lifesAttributeName] = (int)(o as Player)[lifesAttributeName] + 1;
             };
         };
 
@@ -153,20 +153,4 @@ namespace Deckard.Specs
         private static int oneLifeMore;
         private static Player player;
     }
-
-
-    //[Subject(typeof(Card))]
-    //[Ignore]
-    //public class when_has_action_affecting_another_card_and_is_played
-    //{
-
-    //    It should_affect_this_card = () =>
-    //    {
-    //        object ob;
-    //        //object.
-    //        //anotherCard[]
-    //    };
-
-    //    private static Card anotherCard;
-    //}
 }

@@ -9,14 +9,14 @@ namespace Deckard
     {
         public Deck Hand { get; set; }
         public int CardsPlayed { get; set; }
-        public Card CardInHand;
-        public Dictionary<string, int> Attributes;
+        public Card CardInHand { get; set; }
+        public Dictionary<string, object> Attributes { get; set; }
         /// <summary>
         /// Get or set value of the given attribute
         /// </summary>
         /// <param name="attributeName">Name of the attribute</param>
         /// <returns>Value of the given attribute</returns>
-        public int this[string attributeName]
+        public object this[string attributeName]
         {
             get { return Attributes[attributeName]; }
             set
@@ -30,10 +30,10 @@ namespace Deckard
 
         public Player()
         {
-            Attributes = new Dictionary<string, int>();
+            Attributes = new Dictionary<string, object>();
         }
 
-        public void DrawFrom(Deck deck, int cardIndex = -1)
+        public void DrawFrom(Deck deck, int? cardIndex = null)
         {
             CardInHand = deck.TakeAndRemoveCard(cardIndex);
             CardInHand.OnDrawn(this, EventArgs.Empty);
@@ -66,7 +66,7 @@ namespace Deckard
         /// </summary>
         /// <param name="source"></param>
         /// <param name="cardIndex"></param>
-        public void Draw(Deck source, int cardIndex = -1)
+        public void Draw(Deck source, int? cardIndex = null)
         {
             DrawFrom(source, cardIndex);
             PutCardIn(Hand);
