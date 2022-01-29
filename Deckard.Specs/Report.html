@@ -1,0 +1,600 @@
+<html>
+<head>
+  <title>Machine.Specifications Report</title>
+  <style type="text/css">body {
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: .9em;
+}
+
+.count {
+  color: lightgrey;
+}
+
+.failure, .notimplemented, .ignored {
+  color: red;
+  font-weight: bold;
+  display: inline;
+}
+
+.notimplemented {
+  color: orange;
+}
+
+.ignored {
+  color: gold;
+}
+
+p.exception_type {
+  color: black;
+  font-weight: bold;
+  display: inline;
+}
+
+pre.exception_message {
+  border-style: dashed;
+  border-color: #FF828D;
+  border-width: thin;
+  background-color: #FFD2CF;
+  white-space: pre-wrap; /* CSS2.1 compliant */
+  white-space: -moz-pre-wrap; /* Mozilla-based browsers */
+  white-space: o-pre-wrap; /* Opera 7+ */
+  padding: 1em;
+}
+
+hr {
+  color: lightgrey;
+  border: 1px solid lightgrey;
+  height: 1px;
+}
+
+ul.prev-next {
+  padding: 0;
+  margin: 0;
+  font-size: 2em;
+  }
+  
+.spec ul.prev-next {
+  float: right;
+  right: 30%;
+  position: absolute;
+  margin-top: -1em;
+  }
+
+ul.prev-next li {
+  display: inline;
+  padding: 0;
+  margin: 0;
+}
+
+ul.prev-next li a {
+  color: lightgrey;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0 .3em;
+  border: 1px solid lightgrey;
+}
+
+ul.prev-next li.failure a {
+  border-color: red;
+}
+
+ul.prev-next li.notimplemented a {
+  border-color: orange;
+}
+
+ul.prev-next li.ignored a {
+  border-color: gold;
+}
+
+ul.prev-next li.failure a:hover {
+  background-color: red;
+  color: #fff;
+}
+
+ul.prev-next li.notimplemented a:hover {
+  background-color: orange;
+  color: #000;
+}
+
+ul.prev-next li.ignored a:hover {
+  background-color: gold;
+  color: #000;
+}
+
+ul.prev-next li.back a:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+div.supplement {
+  display: none;
+}
+  
+@media print {
+  ul.prev-next {
+    display: none;
+  }
+}
+  </style>
+</head>
+<body>
+  <ul class="prev-next">
+  </ul>
+  <h1>
+    Deckard.Specs
+</h1>
+<h2 class="count">
+  5 concerns,
+  15 contexts,
+  30 specifications
+</h2>
+<script type="text/javascript">
+  function toggleVisibility(id, description)
+  {
+    var section = document.getElementById(id);
+    var link = document.getElementById(id + "_link");
+
+    if (section.style.display == "block")
+    {
+      section.style.display = "none";
+      link.innerHTML = "Show " + description;
+    } else
+    {
+      section.style.display = "block";
+      link.innerHTML = "Hide " + description;
+    }
+  };
+</script> 
+  
+  <hr/>
+  <hr/>
+  
+  <h2 class="concern">
+  Card specifications
+</h2>
+<h3 class="count">
+  4 contexts, 7 specifications
+</h3><h3 class="context">
+  when attributes are set
+</h3>
+<h4 class="count">
+  1 specification
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="1">should contain attributes with the values set</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h3 class="context">
+  when compared with another card
+</h3>
+<h4 class="count">
+  4 specifications
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="2">should not be equal if quantity of attributes is different</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="3">should not be equal to card with different names of attributes</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="4">should not be equal to card with different values of attributes</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="5">should be equal to card with the same attributes</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h3 class="context">
+  when has action affecting another player and is played
+</h3>
+<h4 class="count">
+  1 specification
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="6">should affect another player</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h3 class="context">
+  when has action affecting player who plays the card and is played
+</h3>
+<h4 class="count">
+  1 specification
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="7">should affect player who played the card</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h2 class="concern">
+  Deck specifications
+</h2>
+<h3 class="count">
+  2 contexts, 6 specifications
+</h3><h3 class="context">
+  when 3 cards are added
+</h3>
+<h4 class="count">
+  3 specifications
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="11">should have 3 cards</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="12">should have the last card on top</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="13">should have the first card on bottom</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h3 class="context">
+  when compared with another deck
+</h3>
+<h4 class="count">
+  3 specifications
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="8">should not be equal if cards have different attributes</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="9">should not be equal if quantity of cards is different</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="10">should be equal if cards are in the same order</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h2 class="concern">
+  Game specifications
+</h2>
+<h3 class="count">
+  4 contexts, 8 specifications
+</h3><h3 class="context">
+  when dealing all cards from a deck
+</h3>
+<h4 class="count">
+  2 specifications
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="19">should have no cards in source deck</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="20">should have all cards from source in destination decks</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h3 class="context">
+  when dealing cards
+</h3>
+<h4 class="count">
+  4 specifications
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="14">should have less cards in source decks</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="15">should have more cards in destination decs</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="16">should have source decks without dealt cards</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="17">should have destination decks with dealt cards</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h3 class="context">
+  when dealing cards from to small deck
+</h3>
+<h4 class="count">
+  1 specification
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="18">should have destination deck with fewer cards</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h3 class="context">
+  when has first round finished
+</h3>
+<h4 class="count">
+  1 specification
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="21">should have second player as current</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h2 class="concern">
+  Player specifications
+</h2>
+<h3 class="count">
+  3 contexts, 7 specifications
+</h3><h3 class="context">
+  when drawing card from the inside of the deck
+</h3>
+<h4 class="count">
+  2 specifications
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="25">should have this card in hand</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="26">should have removed the card from deck</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h3 class="context">
+  when drawing card from top
+</h3>
+<h4 class="count">
+  3 specifications
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="22">should have this card in hand</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="23">should have removed the card from deck</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="24">should invoke card defined action for drawing event</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h3 class="context">
+  when putting a card in a deck
+</h3>
+<h4 class="count">
+  2 specifications
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="27">should have no card in hand</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+          <li class="spec"><span id="28">should have putted the card in a deck</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h2 class="concern">
+  Shuffler specifications
+</h2>
+<h3 class="count">
+  2 contexts, 2 specifications
+</h3><h3 class="context">
+  when used Knuth Fisher Yates shuffler to shuffle deck
+</h3>
+<h4 class="count">
+  1 specification
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="30">should change the card order in deck</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul><h3 class="context">
+  when used random number sort shuffler to shuffle deck
+</h3>
+<h4 class="count">
+  1 specification
+</h4>
+ 
+        <ul>
+          <li class="spec"><span id="29">should change the card order in deck</span>
+
+
+
+
+ 
+
+ 
+
+          </li>
+        </ul>
+    <hr/>
+</body>
+</html>
