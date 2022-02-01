@@ -124,19 +124,13 @@ namespace Deckard
 
         public void OnDrawn(object sender, EventArgs eventArgs)
         {
-            if (Drawn != null)
-            {
-                Drawn(sender, eventArgs as CardActionEventArgs);
-            }
+            Drawn?.Invoke(sender, eventArgs as CardActionEventArgs);
         }
 
 
         public void OnPlayed(object sender, EventArgs eventArgs)
         {
-            if (Played != null)
-            {
-                Played(sender, eventArgs as CardActionEventArgs);
-            }
+            Played?.Invoke(sender, eventArgs as CardActionEventArgs);
         }
     }
 }

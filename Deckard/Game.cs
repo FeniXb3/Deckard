@@ -91,27 +91,18 @@ namespace Deckard
 
         public void OnCustomActionTaken(object sender, EventArgs eventArgs)
         {
-            if (CustomAction != null)
-            {
-                CustomAction(sender, eventArgs as PlayerActionEventArgs);
-            }
+            CustomAction?.Invoke(sender, eventArgs as PlayerActionEventArgs);
             IsCustomActionSet = false;
         }
 
         public void OnDefaultActionTaken(object sender, EventArgs eventArgs)
         {
-            if (DefaultAction != null)
-            {
-                DefaultAction(sender, eventArgs as PlayerActionEventArgs);
-            }
+            DefaultAction?.Invoke(sender, eventArgs as PlayerActionEventArgs);
         }
 
         public void OnTurnEnded(object sender, EventArgs eventArgs)
         {
-            if (TurnEndAction != null)
-            {
-                TurnEndAction(sender, eventArgs as PlayerActionEventArgs);
-            }
+            TurnEndAction?.Invoke(sender, eventArgs as PlayerActionEventArgs);
         }
 
         public void DealFirstCards(int cardsCount)
@@ -148,10 +139,7 @@ namespace Deckard
 
         public void OnStarting(object sender, EventArgs eventArgs)
         {
-            if (Starting != null)
-            {
-                Starting(sender, eventArgs);
-            }
+            Starting?.Invoke(sender, eventArgs);
         }
 
     }
